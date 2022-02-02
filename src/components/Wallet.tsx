@@ -46,7 +46,7 @@ function MetaMask() {
   )
 }
 
-const WalletStyled = styled.button({
+const WalletStyled = styled.div({
   background: 'linear-gradient(180deg, #2C2C2C 0%, #222222 100%)',
   border: 0,
   boxShadow: `
@@ -157,11 +157,11 @@ export default function Wallet() {
         <Dropdown.Toggle>
           <WalletStyled>
             <svg width="11" height="16" viewBox="0 0 11 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path opacity="0.600006" d="M5.49866 5.99084L0.311523 8.14312L5.49866 10.9421L10.6858 8.14312L5.49866 5.99084Z" fill="white" fill-opacity="0.5"/>
-              <path opacity="0.449997" d="M0.311523 8.14311L5.49867 10.9421V5.99082V0.286194L0.311523 8.14311Z" fill="white" fill-opacity="0.5"/>
-              <path opacity="0.800003" d="M5.49805 0.286194V5.99082V10.9421L10.6852 8.14311L5.49805 0.286194Z" fill="white" fill-opacity="0.5"/>
-              <path opacity="0.449997" d="M0.311523 9.04102L5.49867 15.7138V11.8386L0.311523 9.04102Z" fill="white" fill-opacity="0.5"/>
-              <path opacity="0.800003" d="M5.49805 11.8387V15.7138L10.6883 9.04108L5.49805 11.8387Z" fill="white" fill-opacity="0.5"/>
+              <path opacity="0.600006" d="M5.49866 5.99084L0.311523 8.14312L5.49866 10.9421L10.6858 8.14312L5.49866 5.99084Z" fill="white" fillOpacity="0.5"/>
+              <path opacity="0.449997" d="M0.311523 8.14311L5.49867 10.9421V5.99082V0.286194L0.311523 8.14311Z" fill="white" fillOpacity="0.5"/>
+              <path opacity="0.800003" d="M5.49805 0.286194V5.99082V10.9421L10.6852 8.14311L5.49805 0.286194Z" fill="white" fillOpacity="0.5"/>
+              <path opacity="0.449997" d="M0.311523 9.04102L5.49867 15.7138V11.8386L0.311523 9.04102Z" fill="white" fillOpacity="0.5"/>
+              <path opacity="0.800003" d="M5.49805 11.8387V15.7138L10.6883 9.04108L5.49805 11.8387Z" fill="white" fillOpacity="0.5"/>
             </svg>
             
             {accountData.address.slice(0, 6) + '...' + accountData.address.substr(accountData.address.length - 4)}
@@ -178,11 +178,11 @@ export default function Wallet() {
     render = (
       <WalletStyled onClick={() => open()}>
         <svg width="11" height="16" viewBox="0 0 11 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path opacity="0.600006" d="M5.49866 5.99084L0.311523 8.14312L5.49866 10.9421L10.6858 8.14312L5.49866 5.99084Z" fill="white" fill-opacity="0.5"/>
-          <path opacity="0.449997" d="M0.311523 8.14311L5.49867 10.9421V5.99082V0.286194L0.311523 8.14311Z" fill="white" fill-opacity="0.5"/>
-          <path opacity="0.800003" d="M5.49805 0.286194V5.99082V10.9421L10.6852 8.14311L5.49805 0.286194Z" fill="white" fill-opacity="0.5"/>
-          <path opacity="0.449997" d="M0.311523 9.04102L5.49867 15.7138V11.8386L0.311523 9.04102Z" fill="white" fill-opacity="0.5"/>
-          <path opacity="0.800003" d="M5.49805 11.8387V15.7138L10.6883 9.04108L5.49805 11.8387Z" fill="white" fill-opacity="0.5"/>
+          <path opacity="0.600006" d="M5.49866 5.99084L0.311523 8.14312L5.49866 10.9421L10.6858 8.14312L5.49866 5.99084Z" fill="white" fillOpacity="0.5"/>
+          <path opacity="0.449997" d="M0.311523 8.14311L5.49867 10.9421V5.99082V0.286194L0.311523 8.14311Z" fill="white" fillOpacity="0.5"/>
+          <path opacity="0.800003" d="M5.49805 0.286194V5.99082V10.9421L10.6852 8.14311L5.49805 0.286194Z" fill="white" fillOpacity="0.5"/>
+          <path opacity="0.449997" d="M0.311523 9.04102L5.49867 15.7138V11.8386L0.311523 9.04102Z" fill="white" fillOpacity="0.5"/>
+          <path opacity="0.800003" d="M5.49805 11.8387V15.7138L10.6883 9.04108L5.49805 11.8387Z" fill="white" fillOpacity="0.5"/>
         </svg>
         Sign in with ETH
       </WalletStyled>

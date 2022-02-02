@@ -1,31 +1,34 @@
-import ADDRESSES from './addresses.json';
+import { BigNumber } from 'ethers';
 
-export const SUPPORTED_CHAINS = [1, 31337];
+import ADDRESS_LIST from './lists/AddressList.json';
+import CHAIN_ID_LIST from './lists/ChainIdList.json';
+
+export const UNIT = BigNumber.from(1).pow(18);
 
 export const isSupportedChain = (chainId: number) => {
-  if (SUPPORTED_CHAINS.includes(chainId)) {
+  if (CHAIN_ID_LIST.includes(chainId)) {
     return true;
   } else {
     return false;
   }
 };
 
-type Addresses = {
-  [chainId: string]: any,
-};
+export const getAddressList = (chainId?: number) => {
+  type AddressList = {
+    [chainId: string]: any,
+  };
 
-export const getAddresses = (chainId: number) => {
   if (process.env.REACT_APP_NODE_ENV === 'production') {
     if (!chainId) {
-      return ADDRESSES[1];
+      return ADDRESS_LIST[1];
     } else {
-      return (ADDRESSES as Addresses)[chainId];
+      return (ADDRESS_LIST as AddressList)[chainId];
     }
   } else {
     if (!chainId) {
-      return ADDRESSES[31337];
+      return ADDRESS_LIST[31337];
     } else {
-      return (ADDRESSES as Addresses)[chainId];
+      return (ADDRESS_LIST as AddressList)[chainId];
     }
   }
 }

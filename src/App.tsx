@@ -8,6 +8,7 @@ import Footer from './shared/components/Footer';
 import Header from './components/Header';
 import Wallet from './components/Wallet';
 import { GlobalProvider } from './contexts/GlobalContext';
+import Vault from './pages/vault';
 
 const connectors = () => {
   return [new InjectedConnector({ chains: defaultChains })];
@@ -52,6 +53,9 @@ export default function App() {
           {/* Main content */}
           <Wrapper>
             <Main>
+              <Routes>
+                <Route path="/" element={<Vault />} />
+              </Routes>
             </Main>
           </Wrapper>
 
