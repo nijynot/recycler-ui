@@ -2,7 +2,7 @@ import { BigNumber, utils } from 'ethers';
 import styled from 'styled-components';
 import { useAccount } from 'wagmi';
 
-import { getAddressList } from '../../constants';
+import { getAddressList, UNIT } from '../../constants';
 import Reactor from '../../constants/svgs/Reactor';
 import { useGlobalContext } from '../../contexts/GlobalContext';
 import { useQuery } from '../../hooks/useQuery';
@@ -14,6 +14,9 @@ import H2 from '../../components/H2';
 import { Statistics, Statistic } from './components/Statistics';
 import Tabs from './components/Tabs';
 import TransactionSentModal from './components/TransactionSentModal';
+import { useMarketData } from '../../hooks/useMarketData';
+
+const comma = require('comma-number');
 
 const Heading = styled.div({
   textAlign: 'center',
@@ -130,22 +133,49 @@ const Symbol = styled.div({
 });
 
 type Query = {
-  erc20: {
+  vault: {
     balanceOf: BigNumber;
+  },
+  token: {
+    balanceOf: BigNumber;
+  },
+  coins: {
+    balanceOf: BigNumber;
+  },
+  recycler: {
+    capacity: BigNumber;
   },
 };
 
-const query = `query($erc20: String!, $account: String!, $connected: Boolean!) {
-  erc20(address: $erc20) @include(if: $connected) {
+const query = `query(
+  $erc20: String!,
+  $vault: String!,
+  $recycler: String!,
+  $account: String!,
+  $connected: Boolean!
+) {
+  vault: erc20(address: $erc20) {
+    balanceOf(account: $vault)
+  }
+  token: erc20(address: $erc20) @include(if: $connected) {
     balanceOf(account: $account)
+  }
+  coins: erc20(address: $recycler) @include(if: $connected) {
+    balanceOf(account: $account)
+  }
+  recycler {
+    capacity
   }
 }`;
 
 export default function Vault() {
+  const marketData = useMarketData();
   const { state, dispatch } = useGlobalContext();
   const [{ data: account }] = useAccount();
   const { data } = useQuery<Query>(query, {
     erc20: getAddressList().TokeVotePool,
+    vault: getAddressList().Recycler,
+    recycler: getAddressList().Recycler,
     account: (account?.address) ? account?.address : '',
     connected: (account?.address) ? true : false,
   })
@@ -170,7 +200,9 @@ export default function Vault() {
 
   const max = () => {
     if (state.tab === 0) {
-      dispatch({ type: 'depositAmount', value: utils.formatUnits(data?.erc20?.balanceOf, 18) });
+      dispatch({ type: 'depositAmount', value: utils.formatUnits(data?.token?.balanceOf, 18) });
+    } else if (state.tab === 1) {
+      dispatch({ type: 'withdrawAmount', value: utils.formatUnits(data?.coins?.balanceOf, 18) });
     }
   };
 
@@ -189,22 +221,36 @@ export default function Vault() {
         </Heading>
 
         <Statistics>
-          <Statistic label="APR" value="51.94%" comment="+9%↑ on (Re)cycler" color="rgb(48, 245, 109)" />
+          <Statistic
+            label="APR"
+            value={data?.vault?.balanceOf ? '51.94%' : '-'}
+            comment="+9%↑ on (Re)cycler"
+            color="rgb(48, 245, 109)"
+          />
           <Divider />
-          <Statistic label="Total TOKE" value="116,666" comment="$252,666 USD" />
+          <Statistic
+            label="Total TOKE"
+            value={data?.vault?.balanceOf ? comma(data?.vault?.balanceOf.div(UNIT).toNumber()) : '-'}
+            comment={(data?.vault?.balanceOf && marketData.toke) ? (
+              `$${(data?.vault?.balanceOf.div(UNIT).toNumber() * marketData.toke).toFixed(1)} USD` 
+            ) : `-`}
+          />
         </Statistics>
 
         {/* Recycler */}
         <Recycler>
           <Name>TOKEMAK (RE)CYCLE VAULT</Name>
           <ReactorWrapper><Reactor /></ReactorWrapper>
-          <Capacity />
+          <Capacity
+            currentDeposits={data?.vault?.balanceOf}
+            maxCapacity={data?.recycler?.capacity}
+          />
 
           <Tabs />
           <TokenInput>
             <AmountInput value={value()} setter={setter} />
             <Max onClick={max}>MAX</Max>
-            <Symbol>tTOKE</Symbol>
+            <Symbol>{state.tab === 0 ? 'tTOKE' : '(re)tTOKE'}</Symbol>
           </TokenInput>
           <Button />
 

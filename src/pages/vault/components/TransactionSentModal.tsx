@@ -60,7 +60,7 @@ export default function TransactionSentModal() {
         <ModalHeading>Transaction Submitted!</ModalHeading>
         <ModalDescription>
           Please wait while your transaction is being confirmed.<br />
-          Your transaction is viewable on Etherscan
+          Your transaction is viewable on Etherscan.
         </ModalDescription>
 
         <EtherscanLinkItem>

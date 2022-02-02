@@ -48,7 +48,6 @@ export function useMutation<T extends Transaction>(
     (async () => {
       const mutation = async () => {
         try {
-          setLoading(true);
           const result = await graphql({
             schema,
             source,
@@ -59,6 +58,7 @@ export function useMutation<T extends Transaction>(
               signer: signer,
             },
           });
+          setLoading(true);
 
           if (result.errors)
             throw result.errors;
@@ -82,6 +82,7 @@ export function useMutation<T extends Transaction>(
           }
         } catch (e) {
           console.error(e);
+          setLoading(false);
         }
       };
 

@@ -3,8 +3,8 @@
     "TokeVotePool": "0xa760e26aA76747020171fCF8BdA108dFdE8Eb930"
   },
   "31337": {
-    "Recycler": "0x0d4ff719551e23185aeb16ffbf2abebb90635942",
-    "RecyclerManager": "0x85c5dd61585773423e378146d4bec6f8d149e248",
+    "Recycler": "0x40918ba7f132e0acba2ce4de4c4baf9bd2d7d849",
+    "RecyclerManager": "0xf32d39ff9f6aa7a7a64d7a4f00a54826ef791a55",
     "TokeVotePool": "0xa760e26aA76747020171fCF8BdA108dFdE8Eb930"
   }
 }

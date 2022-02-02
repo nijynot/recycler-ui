@@ -27,7 +27,10 @@ const BlueButton = styled.button({
 });
 
 const GreyButton = styled(BlueButton)({
-  background: 'rgba(255, 255, 255, 0.5)',
+  background: 'rgba(255, 255, 255, 0.1)',
+  boxShadow: 'none',
+  color: 'rgba(255, 255, 255, 0.5)',
+  cursor: 'not-allowed',
 });
 
 const GreenButton = styled(BlueButton)({
@@ -90,37 +93,27 @@ export default function Button() {
   let render: JSX.Element = <BlueButton>-</BlueButton>;
 
   if (loading) {
-    render = (
-      <GreyButton>Waiting for confirmation...</GreyButton>
-    );
+    render = <GreyButton>Waiting for confirmation...</GreyButton>;
   } else if (!account) {
-    render = (
-      <BlueButton onClick={() => openWalletModal()}>Sign in with ETH</BlueButton>
-    );
+    render = <BlueButton onClick={() => openWalletModal()}>Sign in with ETH</BlueButton>;
   } else if (state.tab === 0) {
-    if (state.depositAmount && data?.erc20?.allowance.lt(utils.parseUnits(state.depositAmount, 18))) {
-      render = (
-        <BlueButton onClick={() => approve()} disabled={!state.depositAmount}>Approve</BlueButton>
-      );
+    if (!state.depositAmount) {
+      render = <GreyButton>Enter an amount</GreyButton>;
+    } else if (data?.erc20?.allowance.lt(utils.parseUnits(state.depositAmount, 18))) {
+      render = <BlueButton onClick={() => approve()} disabled={!state.depositAmount}>Approve</BlueButton>;
     } else {
-      render = (
-        <GreenButton onClick={() => deposit()} disabled={!state.depositAmount}>Deposit</GreenButton>
-      );
+      render = <GreenButton onClick={() => deposit()} disabled={!state.depositAmount}>Deposit</GreenButton>;
     }
   } else if (state.tab === 1) {
-    if (!data?.erc20?.allowance.eq(constants.MaxUint256)) {
-      render = (
-        <BlueButton disabled={!state.withdrawAmount}>Approve</BlueButton>
-      );
+    if (!state.withdrawAmount) {
+      render = <GreyButton>Enter an amount</GreyButton>;
+    } else if (!data?.erc20?.allowance.eq(constants.MaxUint256)) {
+      render = <BlueButton disabled={!state.withdrawAmount}>Approve</BlueButton>;
     } else {
-      render = (
-        <GreenButton onClick={() => {}} disabled={!state.withdrawAmount}>Withdraw</GreenButton>
-      );
+      render = <GreenButton onClick={() => {}} disabled={!state.withdrawAmount}>Withdraw</GreenButton>;
     }
   } else {
-    render = (
-      <BlueButton>-</BlueButton>
-    );
+    render = <BlueButton>-</BlueButton>;
   }
 
   return (

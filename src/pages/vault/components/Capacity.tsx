@@ -56,40 +56,21 @@ export function CapacityItem({ label, value }: CapacityItemProps) {
   );
 }
 
-type CapacityQuery = {
-  erc20: {
-    balanceOf: BigNumber;
-  },
-  recycler: {
-    capacity: BigNumber;
-  },
+type CapacityProps = {
+  currentDeposits: BigNumber;
+  maxCapacity: BigNumber;
 };
 
-const query = `query($erc20: String!, $account: String!) {
-  erc20(address: $erc20) {
-    balanceOf(account: $account)
-  }
-  recycler {
-    name
-    capacity
-  }
-}`;
-
-export default function CapacityList() {
-  const { data } = useQuery<CapacityQuery>(query, {
-    erc20: getAddressList().TokeVotePool,
-    account: getAddressList().Recycler,
-  });
-
+export default function Capacity({ currentDeposits, maxCapacity }: CapacityProps) {
   return (
     <CapacityStyled>
       <CapacityItem
         label="MAX CAPACITY"
-        value={data?.recycler?.capacity}
+        value={maxCapacity}
       />
       <CapacityItem
         label="CURRENT DEPOSITS"
-        value={data?.erc20?.balanceOf}
+        value={currentDeposits}
       />
     </CapacityStyled>
   );

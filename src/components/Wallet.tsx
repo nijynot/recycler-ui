@@ -128,7 +128,7 @@ export default function Wallet() {
   const { state, dispatch } = useGlobalContext();
 
   const [{ data, error }, connect] = useConnect();
-  const [{ data: accountData }, disconnect] = useAccount({ fetchEns: true });
+  const [{ data: account }, disconnect] = useAccount({ fetchEns: true });
   const [{ data: network }] = useNetwork();
 
   const open = () => {
@@ -140,10 +140,10 @@ export default function Wallet() {
   };
 
   useEffect(() => {
-    if (state.isWalletModalOpen && accountData?.address) {
+    if (state.isWalletModalOpen && account?.address) {
       dispatch({ type: 'isWalletModalOpen', value: false });
     }
-  }, [dispatch, state.isWalletModalOpen, accountData?.address]);
+  }, [dispatch, state.isWalletModalOpen, account?.address]);
 
   let render: JSX.Element;
 
@@ -151,7 +151,7 @@ export default function Wallet() {
     render = (
       <WrongNetwork>Wrong Network</WrongNetwork>
     );
-  } else if (accountData?.address) {
+  } else if (account?.address) {
     render = (
       <Dropdown align="end">
         <Dropdown.Toggle>
@@ -164,13 +164,13 @@ export default function Wallet() {
               <path opacity="0.800003" d="M5.49805 11.8387V15.7138L10.6883 9.04108L5.49805 11.8387Z" fill="white" fillOpacity="0.5"/>
             </svg>
             
-            {accountData.address.slice(0, 6) + '...' + accountData.address.substr(accountData.address.length - 4)}
+            {account.address.slice(0, 6) + '...' + account.address.substr(account.address.length - 4)}
           </WalletStyled>
         </Dropdown.Toggle>
 
         <Dropdown.Menu style={{ marginTop: 4 }}>
           <Dropdown.Item onClick={() => disconnect()}>Disconnect</Dropdown.Item>
-          <Dropdown.Item>Etherscan</Dropdown.Item>
+          <Dropdown.Item href={`https://etherscan.io/address/${account.address}`}>Etherscan</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     );
