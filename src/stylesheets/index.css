@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'Inter';
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+  src: url(../shared/fonts/Inter.var.woff2?v=3.19) format("woff2");
+}
+
+@font-face {
+  font-family: 'iA Writer Mono';
+  font-weight: 400;
+  src: url(../shared/fonts/iAWriterMonoS-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'iA Writer Mono';
+  font-weight: 700;
+  src: url(../shared/fonts/iAWriterMonoS-Bold.ttf) format('truetype');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #111111;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-feature-settings: 'kern' 1, 'zero' 1, 'ss01' 1, 'ss02', 'calt' 0;
+  font-size: 16px;
+  margin: 0;
+  text-rendering: geometricPrecision;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  font-size: 13px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+input {
+  font-family: 'Inter', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 14px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

@@ -1,0 +1,10 @@
+{
+  "1": {
+    "TokeVotePool": "0xa760e26aA76747020171fCF8BdA108dFdE8Eb930"
+  },
+  "31337": {
+    "Recycler": "0x0d4ff719551e23185aeb16ffbf2abebb90635942",
+    "RecyclerManager": "0x85c5dd61585773423e378146d4bec6f8d149e248",
+    "TokeVotePool": "0xa760e26aA76747020171fCF8BdA108dFdE8Eb930"
+  }
+}

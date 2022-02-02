@@ -1,0 +1,64 @@
+import { providers } from 'ethers';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
+import { Provider, defaultChains } from 'wagmi';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+
+import Footer from './shared/components/Footer';
+import Header from './components/Header';
+import Wallet from './components/Wallet';
+import { GlobalProvider } from './contexts/GlobalContext';
+
+const connectors = () => {
+  return [new InjectedConnector({ chains: defaultChains })];
+};
+
+const provider = ({ chainId }: any) => {
+  if (process.env.NODE_ENV === 'production') {
+    return new providers.AlchemyProvider(chainId, '');
+  } else {
+    return new providers.JsonRpcProvider('http://localhost:8545');
+  }
+};
+
+const Wrapper = styled.div({
+  paddingBottom: '4rem',
+  flex: 1,
+});
+
+const Main = styled.main({
+  display: 'flex',
+  flexDirection: 'column',
+  fontSize: '0.875rem',
+  margin: '0 auto',
+  maxWidth: 652,
+  padding: '8rem 0 1.25rem 0',
+});
+
+export default function App() {
+  return (
+    <GlobalProvider>
+      <Provider
+        autoConnect
+        connectors={connectors}
+        provider={provider}
+      >
+        <BrowserRouter>
+          {/* Header */}
+          <Header>
+            <Wallet />
+          </Header>
+          
+          {/* Main content */}
+          <Wrapper>
+            <Main>
+            </Main>
+          </Wrapper>
+
+          {/* Footer */}
+          <Footer />
+        </BrowserRouter>
+      </Provider>
+    </GlobalProvider>
+  );
+}
