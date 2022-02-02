@@ -1,7 +1,8 @@
-import { BigNumber, constants, utils } from 'ethers';
+import { BigNumber, constants } from 'ethers';
+import millify from 'millify';
 import styled from 'styled-components';
 
-import { getAddressList } from '../../../constants';
+import { getAddressList, UNIT } from '../../../constants';
 import { useQuery } from '../../../hooks/useQuery';
 
 export const CapacityStyled = styled.div({
@@ -37,7 +38,7 @@ export function CapacityItem({ label, value }: CapacityItemProps) {
     if (value.eq(constants.MaxUint256)) {
       render = '∞';
     } else {
-      render = utils.formatUnits(value, 18);
+      render = millify(value.div(UNIT).toNumber());
     }
   } else {
     render = '-';
@@ -87,7 +88,7 @@ export default function CapacityList() {
         value={data?.recycler?.capacity}
       />
       <CapacityItem
-        label="CURRENT CAPACITY"
+        label="CURRENT DEPOSITS"
         value={data?.erc20?.balanceOf}
       />
     </CapacityStyled>

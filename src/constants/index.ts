@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import ADDRESS_LIST from './lists/AddressList.json';
 import CHAIN_ID_LIST from './lists/ChainIdList.json';
 
-export const UNIT = BigNumber.from(1).pow(18);
+export const UNIT = BigNumber.from(10).pow(18);
 
 export const isSupportedChain = (chainId: number) => {
   if (CHAIN_ID_LIST.includes(chainId)) {
