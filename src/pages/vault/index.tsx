@@ -182,27 +182,27 @@ export default function Vault() {
 
   const value = () => {
     if (state.tab === 0)
-      return state.depositAmount;
+      return state.mintAmount;
     else if (state.tab === 1)
-      return state.withdrawAmount;
+      return state.burnAmount;
     else
       throw new Error(`Tab "${state.tab}" does not exist.`);
   }
 
   const setter = (amount: string) => {
     if (state.tab === 0)
-      dispatch({ type: 'depositAmount', value: amount });
+      dispatch({ type: 'mintAmount', value: amount });
     else if (state.tab === 1)
-      dispatch({ type: 'withdrawAmount', value: amount });
+      dispatch({ type: 'burnAmount', value: amount });
     else
       throw new Error(`Tab "${state.tab}" does not exist.`);
   }
 
   const max = () => {
     if (state.tab === 0) {
-      dispatch({ type: 'depositAmount', value: utils.formatUnits(data?.token?.balanceOf, 18) });
+      dispatch({ type: 'mintAmount', value: utils.formatUnits(data?.token?.balanceOf, 18) });
     } else if (state.tab === 1) {
-      dispatch({ type: 'withdrawAmount', value: utils.formatUnits(data?.coins?.balanceOf, 18) });
+      dispatch({ type: 'burnAmount', value: utils.formatUnits(data?.coins?.balanceOf, 18) });
     }
   };
 
@@ -262,7 +262,7 @@ export default function Vault() {
         </Recycler>
       </div>
 
-      {/* Modal for deposit/withdraw */}
+      {/* Modal for tx completion */}
       <TransactionSentModal />
     </>
   );

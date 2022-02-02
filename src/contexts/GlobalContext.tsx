@@ -11,8 +11,8 @@ type State = {
   isTransactionSentModalOpen: boolean;
 
   // amounts
-  depositAmount: string;
-  withdrawAmount: string;
+  mintAmount: string;
+  burnAmount: string;
 };
 
 const defaultState: State = {
@@ -26,8 +26,8 @@ const defaultState: State = {
   isTransactionSentModalOpen: false,
 
   // amounts
-  depositAmount: '',
-  withdrawAmount: '',
+  mintAmount: '',
+  burnAmount: '',
 };
 
 type Action =
@@ -35,8 +35,8 @@ type Action =
   | { type: 'txHash', value: string }
   | { type: 'isWalletModalOpen', value: boolean }
   | { type: 'isTransactionSentModalOpen', value: boolean }
-  | { type: 'depositAmount', value: string }
-  | { type: 'withdrawAmount', value: string };
+  | { type: 'mintAmount', value: string }
+  | { type: 'burnAmount', value: string };
 
 const defaultDispatch: React.Dispatch<Action> = () => {
   return defaultState;

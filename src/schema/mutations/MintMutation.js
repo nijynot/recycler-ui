@@ -6,7 +6,7 @@ import RecyclerManager from '../../constants/abis/RecyclerManager.json';
 import BigNumberType from '../types/BigNumberType';
 import TransactionType from '../types/TransactionType';
 
-const DepositMutation = {
+const MintMutation = {
   type: new GraphQLNonNull(TransactionType),
   args: {
     amount: {
@@ -19,4 +19,4 @@ const DepositMutation = {
   },
 };
 
-export default DepositMutation;
+export default MintMutation;

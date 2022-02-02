@@ -55,8 +55,8 @@ const mutationApprove = `mutation ($address: String!, $spender: String!, $amount
   }
 }`;
 
-const mutationDeposit = `mutation ($amount: BigNumber!) {
-  tx: deposit(amount: $amount) {
+const mutationmint = `mutation ($amount: BigNumber!) {
+  tx: mint(amount: $amount) {
     hash
   }
 }`;
@@ -69,7 +69,7 @@ export default function Button() {
   };
   
   const openTranasctionSentModel = (data: any) => {
-    dispatch({ type: 'depositAmount', value: '' });
+    dispatch({ type: 'mintAmount', value: '' });
     dispatch({ type: 'isTransactionSentModalOpen', value: true });
     dispatch({ type: 'txHash', value: data?.tx?.hash });
   };
@@ -86,8 +86,8 @@ export default function Button() {
     spender: getAddressList().RecyclerManager,
     amount: constants.MaxUint256,
   }, { wait: true, final: refetch });
-  const [deposit] = useMutation(mutationDeposit, {
-    amount: state.depositAmount ? utils.parseUnits(state.depositAmount, 18) : '',
+  const [mint] = useMutation(mutationmint, {
+    amount: state.mintAmount ? utils.parseUnits(state.mintAmount, 18) : '',
   }, { after: openTranasctionSentModel, final: refetch });
 
   let render: JSX.Element = <BlueButton>-</BlueButton>;
@@ -97,20 +97,20 @@ export default function Button() {
   } else if (!account) {
     render = <BlueButton onClick={() => openWalletModal()}>Sign in with ETH</BlueButton>;
   } else if (state.tab === 0) {
-    if (!state.depositAmount) {
+    if (!state.mintAmount) {
       render = <GreyButton>Enter an amount</GreyButton>;
-    } else if (data?.erc20?.allowance.lt(utils.parseUnits(state.depositAmount, 18))) {
-      render = <BlueButton onClick={() => approve()} disabled={!state.depositAmount}>Approve</BlueButton>;
+    } else if (data?.erc20?.allowance.lt(utils.parseUnits(state.mintAmount, 18))) {
+      render = <BlueButton onClick={() => approve()} disabled={!state.mintAmount}>Approve</BlueButton>;
     } else {
-      render = <GreenButton onClick={() => deposit()} disabled={!state.depositAmount}>Deposit</GreenButton>;
+      render = <GreenButton onClick={() => mint()} disabled={!state.mintAmount}>Deposit</GreenButton>;
     }
   } else if (state.tab === 1) {
-    if (!state.withdrawAmount) {
+    if (!state.burnAmount) {
       render = <GreyButton>Enter an amount</GreyButton>;
     } else if (!data?.erc20?.allowance.eq(constants.MaxUint256)) {
-      render = <BlueButton disabled={!state.withdrawAmount}>Approve</BlueButton>;
+      render = <BlueButton disabled={!state.burnAmount}>Approve</BlueButton>;
     } else {
-      render = <GreenButton onClick={() => {}} disabled={!state.withdrawAmount}>Withdraw</GreenButton>;
+      render = <GreenButton onClick={() => {}} disabled={!state.burnAmount}>Withdraw</GreenButton>;
     }
   } else {
     render = <BlueButton>-</BlueButton>;
