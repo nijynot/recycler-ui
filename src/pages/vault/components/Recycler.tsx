@@ -1,10 +1,15 @@
+import { BigNumber, utils } from 'ethers';
 import styled from 'styled-components';
+import { useAccount } from 'wagmi';
+import { getAddressList } from '../../../constants';
 
 import Reactor from '../../../constants/svgs/Reactor';
 import { useGlobalContext } from '../../../contexts/GlobalContext';
+import { useQuery } from '../../../hooks/useQuery';
 import NumericalInput from '../../../shared/components/NumericalInput';
 
-import Capcity from './Capacity';
+import Button from './Button';
+import Capacity from './Capacity';
 import Tabs from './Tabs';
 
 const RecyclerStyled = styled.div({
@@ -94,8 +99,26 @@ const Symbol = styled.div({
   opacity: 0.75,
 });
 
+type Query = {
+  erc20: {
+    balanceOf: BigNumber;
+  },
+};
+
+const query = `query($erc20: String!, $account: String!, $connected: Boolean!) {
+  erc20(address: $erc20) @include(if: $connected) {
+    balanceOf(account: $account)
+  }
+}`;
+
 export default function Recycler() {  
   const { state, dispatch } = useGlobalContext();
+  const [{ data: account }] = useAccount();
+  const { data } = useQuery<Query>(query, {
+    erc20: getAddressList().TokeVotePool,
+    account: (account?.address) ? account?.address : '',
+    connected: (account?.address) ? true : false,
+  })
 
   const value = () => {
     if (state.tab === 0)
@@ -115,18 +138,25 @@ export default function Recycler() {
       throw new Error(`Tab "${state.tab}" does not exist.`);
   }
 
+  const max = () => {
+    if (state.tab === 0) {
+      dispatch({ type: 'depositAmount', value: utils.formatUnits(data?.erc20?.balanceOf, 18) });
+    }
+  };
+
   return (
     <RecyclerStyled>
       <Name>TOKEMAK (RE)CYCLE VAULT</Name>
       <ReactorWrapper><Reactor /></ReactorWrapper>
-      <Capcity />
+      <Capacity />
 
       <Tabs />
       <TokenInput>
         <AmountInput value={value()} setter={setter} />
-        <Max>MAX</Max>
+        <Max onClick={max}>MAX</Max>
         <Symbol>tTOKE</Symbol>
       </TokenInput>
+      <Button />
 
       <Description>
         Deposit tTOKE and get the compounding (re)tTOKE.

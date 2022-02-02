@@ -1,7 +1,7 @@
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import styled from 'styled-components';
 
-import { getAddressList, UNIT } from '../../../constants';
+import { getAddressList } from '../../../constants';
 import { useQuery } from '../../../hooks/useQuery';
 
 export const CapacityStyled = styled.div({
@@ -37,7 +37,7 @@ export function CapacityItem({ label, value }: CapacityItemProps) {
     if (value.eq(constants.MaxUint256)) {
       render = '∞';
     } else {
-      render = value.div(UNIT).toString();
+      render = utils.formatUnits(value, 18);
     }
   } else {
     render = '-';

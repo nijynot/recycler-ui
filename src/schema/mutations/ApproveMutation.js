@@ -18,9 +18,9 @@ const ApproveMutation = {
       type: new GraphQLNonNull(BigNumberType),
     },
   },
-  resolve: async (_, args, { provider }) => {
-    const token = new Contract(args.address, ERC20, provider);
-    return token.connect(provider.getSigner()).approve(args.spender, args.amount);
+  resolve: async (_, args, { provider, signer }) => {
+    const contract = new Contract(args.address, ERC20, provider);
+    return contract.connect(signer).approve(args.spender, args.amount);
   },
 };
 

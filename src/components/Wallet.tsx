@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import { useAccount, useConnect, useNetwork } from 'wagmi';

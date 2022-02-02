@@ -3,9 +3,12 @@ import React, { useContext, useReducer } from 'react';
 type State = {
   // tab
   tab: number;
+  // tx hash for etherscan modal
+  txHash: number;
 
   // modals
   isWalletModalOpen: boolean;
+  isTransactionSentModalOpen: boolean;
 
   // amounts
   depositAmount: string;
@@ -15,9 +18,12 @@ type State = {
 const defaultState: State = {
   // tab
   tab: 0,
+  // tx hash for etherscan modal
+  txHash: 0,
 
   // modals
   isWalletModalOpen: false,
+  isTransactionSentModalOpen: false,
 
   // amounts
   depositAmount: '',
@@ -26,7 +32,9 @@ const defaultState: State = {
 
 type Action =
   | { type: 'tab', value: number }
+  | { type: 'txHash', value: string }
   | { type: 'isWalletModalOpen', value: boolean }
+  | { type: 'isTransactionSentModalOpen', value: boolean }
   | { type: 'depositAmount', value: string }
   | { type: 'withdrawAmount', value: string };
 

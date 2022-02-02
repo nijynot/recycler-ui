@@ -31,7 +31,25 @@ export default new GraphQLObjectType({
         },
       },
       resolve: async (contract, args) => {
-        return contract.balanceOf(args.account);
+        if (args.account) {
+          return contract.balanceOf(args.account);
+        } else {
+          return 0;
+        }
+      },
+    },
+    allowance: {
+      type: new GraphQLNonNull(BigNumberType),
+      args: {
+        owner: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+        spender: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+      },
+      resolve: async (contract, args) => {
+        return contract.allowance(args.owner, args.spender);
       },
     },
   },

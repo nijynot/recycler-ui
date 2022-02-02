@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 import H2 from '../../components/H2';
-import { useQuery } from '../../hooks/useQuery';
 import { Statistics, Statistic } from './components/Statistics';
 import Recycler from './components/Recycler';
+import TransactionSentModal from './components/TransactionSentModal';
 
 const Heading = styled.div({
   textAlign: 'center',
@@ -34,24 +34,30 @@ const Divider = styled.div({
 
 export default function Vault() {
   return (
-    <div>
-      <Heading>
-        <H2Light style={{ marginRight: 8 }}>Tokemak</H2Light>
-        <H2ExtraBold>(Re)cycler</H2ExtraBold>
+    <>
+      <div>
+        {/* Vault */}
+        <Heading>
+          <H2Light style={{ marginRight: 8 }}>Tokemak</H2Light>
+          <H2ExtraBold>(Re)cycler</H2ExtraBold>
 
-        <SubHeading>
-          The (Re)cycler compounds TOKE rewards from<br />
-          the highest yielding reactors and bribes.
-        </SubHeading>
-      </Heading>
+          <SubHeading>
+            The (Re)cycler compounds TOKE rewards from<br />
+            the highest yielding reactors and bribes.
+          </SubHeading>
+        </Heading>
 
-      <Statistics>
-        <Statistic label="APR" value="51.94%" comment="+9%↑ on (Re)cycler" color="rgb(48, 245, 109)" />
-        <Divider />
-        <Statistic label="Total TOKE" value="116,666" comment="$252,666 USD" />
-      </Statistics>
+        <Statistics>
+          <Statistic label="APR" value="51.94%" comment="+9%↑ on (Re)cycler" color="rgb(48, 245, 109)" />
+          <Divider />
+          <Statistic label="Total TOKE" value="116,666" comment="$252,666 USD" />
+        </Statistics>
 
-      <Recycler />
-    </div>
+        <Recycler />
+      </div>
+
+      {/* Modal for deposit/withdraw */}
+      <TransactionSentModal />
+    </>
   );
 }
