@@ -2,8 +2,7 @@ import { BigNumber, constants } from 'ethers';
 import millify from 'millify';
 import styled from 'styled-components';
 
-import { getAddressList, UNIT } from '../../../constants';
-import { useQuery } from '../../../hooks/useQuery';
+import { UNIT } from '../../../constants';
 
 export const CapacityStyled = styled.div({
   display: 'flex',
@@ -21,17 +20,30 @@ const Wrapper = styled.div({
   width: '100%',
 });
 
-const Text = styled.div({
+const CapacityLabel = styled.div({
   opacity: 0.5,
+  fontWeight: 300,
+  padding: '0 4px',
+  flex: 1,
+  letterSpacing: '0.03em',
+});
+
+const CapacityAmount = styled.div({
+  fontWeight: 600,
+});
+
+const CapacitySymbol = styled.div({
+  opacity: 0.5,
+  fontWeight: 400,
   padding: '0 4px',
 });
 
-export type CapacityItemProps = {
+export type CapacityProps = {
   label?: string;
   value?: BigNumber;
 };
 
-export function CapacityItem({ label, value }: CapacityItemProps) {
+export function Capacity({ label, value }: CapacityProps) {
   let render;
 
   if (value) {
@@ -46,32 +58,15 @@ export function CapacityItem({ label, value }: CapacityItemProps) {
 
   return (
     <Wrapper>
-      <Text style={{
-        flex: 1,
-        fontWeight: 400,
-        letterSpacing: '0.03em',
-      }}>{label}</Text>
-      {render} <Text>tTOKE</Text>
+      <CapacityLabel>{label}</CapacityLabel>
+      <CapacityAmount>{render}</CapacityAmount>
+      <CapacitySymbol>tTOKE</CapacitySymbol>
     </Wrapper>
   );
 }
 
-type CapacityProps = {
-  currentDeposits: BigNumber;
-  maxCapacity: BigNumber;
-};
-
-export default function Capacity({ currentDeposits, maxCapacity }: CapacityProps) {
+export function Capacities({ children }: { children: React.ReactNode }) {
   return (
-    <CapacityStyled>
-      <CapacityItem
-        label="MAX CAPACITY"
-        value={maxCapacity}
-      />
-      <CapacityItem
-        label="CURRENT DEPOSITS"
-        value={currentDeposits}
-      />
-    </CapacityStyled>
+    <CapacityStyled>{children}</CapacityStyled>
   );
 }

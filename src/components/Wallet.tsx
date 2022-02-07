@@ -132,18 +132,18 @@ export default function Wallet() {
   const [{ data: network }] = useNetwork();
 
   const open = () => {
-    dispatch({ type: 'isWalletModalOpen', value: true });
+    dispatch({ type: 'modals.isWalletModalOpen', value: true });
   };
 
   const close = () => {
-    dispatch({ type: 'isWalletModalOpen', value: false });
+    dispatch({ type: 'modals.isWalletModalOpen', value: false });
   };
 
   useEffect(() => {
-    if (state.isWalletModalOpen && account?.address) {
-      dispatch({ type: 'isWalletModalOpen', value: false });
+    if (state.modals.isWalletModalOpen && account?.address) {
+      dispatch({ type: 'modals.isWalletModalOpen', value: false });
     }
-  }, [dispatch, state.isWalletModalOpen, account?.address]);
+  }, [dispatch, state.modals.isWalletModalOpen, account?.address]);
 
   let render: JSX.Element;
 
@@ -194,7 +194,7 @@ export default function Wallet() {
       {render}
 
       <Modal
-        show={state.isWalletModalOpen}
+        show={state.modals.isWalletModalOpen}
         onHide={() => close()}
       >
         <ModalBody>

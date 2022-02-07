@@ -3,10 +3,14 @@ import styled from 'styled-components';
 import H1 from '../../../components/H1';
 
 const StatisticStyled = styled.div({
+  flex: 1,
+  margin: '0 24px',
+});
+
+const Center = styled.div({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  margin: '0 24px',
 });
 
 const Label = styled.div({
@@ -37,14 +41,17 @@ type StatisticProps = {
   value: string;
   comment: string;
   color?: string;
+  style?: React.CSSProperties;
 };
 
-export function Statistic({ label, value, comment, color }: StatisticProps) {
+export function Statistic({ label, value, comment, color, style }: StatisticProps) {
   return (
-    <StatisticStyled>
-      <Label>{label}</Label>
-      <Value style={{ color }}>{value}</Value>
-      <Comment>{comment}</Comment>
+    <StatisticStyled style={style}>
+      <Center>
+        <Label>{label}</Label>
+        <Value style={{ color }}>{value}</Value>
+        <Comment>{comment}</Comment>
+      </Center>
     </StatisticStyled>
   );
 }

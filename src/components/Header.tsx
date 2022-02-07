@@ -8,7 +8,7 @@ const HeaderStyled = styled.header({
   position: 'fixed',
   WebkitBackdropFilter: 'saturate(180%) blur(8px)',
   width: '100%',
-  zIndex: 100,
+  zIndex: 333,
 });
 
 const HeaderWrapper = styled.div({

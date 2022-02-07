@@ -38,7 +38,7 @@
         "type": "bytes32"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "pure"
   },
   {
     "type": "function",
@@ -199,6 +199,35 @@
       }
     ],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "burnable",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "coins",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -436,6 +465,30 @@
   },
   {
     "type": "function",
+    "name": "mintable",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "buffer",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "name",
     "inputs": [],
     "outputs": [
@@ -549,8 +602,14 @@
   },
   {
     "type": "function",
-    "name": "previewBurn",
-    "inputs": [],
+    "name": "queuedOf",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
     "outputs": [
       {
         "internalType": "uint256",
@@ -562,13 +621,13 @@
   },
   {
     "type": "function",
-    "name": "previewMint",
+    "name": "rotating",
     "inputs": [],
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "bool",
         "name": "",
-        "type": "uint256"
+        "type": "bool"
       }
     ],
     "stateMutability": "view"
@@ -591,6 +650,24 @@
       }
     ],
     "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "set",
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "selector",
+        "type": "bytes4"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -769,7 +846,7 @@
         "indexed": true
       },
       {
-        "name": "amount",
+        "name": "value",
         "type": "uint256",
         "indexed": false
       }
@@ -803,7 +880,7 @@
         "indexed": true
       },
       {
-        "name": "amount",
+        "name": "value",
         "type": "uint256",
         "indexed": false
       }
@@ -863,6 +940,11 @@
   {
     "type": "error",
     "name": "ParameterZero",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "UndefinedSelector",
     "inputs": []
   }
 ]

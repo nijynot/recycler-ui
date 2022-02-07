@@ -8,7 +8,6 @@ import Footer from './shared/components/Footer';
 import Header from './components/Header';
 import Wallet from './components/Wallet';
 import { GlobalProvider } from './contexts/GlobalContext';
-import DevTools from './pages/dev-tools';
 import Vault from './pages/vault';
 
 const connectors = () => {
@@ -52,7 +51,6 @@ export default function App() {
             <Main>
               <Routes>
                 <Route path="/" element={<Vault />} />
-                {(process.env.NODE_END !== 'production') && <Route path="/dev" element={<DevTools />} />}
               </Routes>
             </Main>
           </Wrapper>

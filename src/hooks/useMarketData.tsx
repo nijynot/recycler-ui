@@ -15,5 +15,5 @@ export function useMarketData() {
       }, (err) => console.error(err));
   }, []);
 
-  return marketData;
+  return { data: marketData };
 }

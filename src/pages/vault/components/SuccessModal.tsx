@@ -47,13 +47,13 @@ export default function TransactionSentModal() {
   const { state, dispatch } = useGlobalContext();
 
   const close = () => {
-    dispatch({ type: 'isTransactionSentModalOpen', value: false });
+    dispatch({ type: 'modals.isSuccessModalOpen', value: false });
     dispatch({ type: 'txHash', value: '' });
   };
 
   return (
     <Modal
-      show={state.isTransactionSentModalOpen}
+      show={state.modals.isSuccessModalOpen}
       onHide={() => close()}
     >
       <ModalBody>
