@@ -223,11 +223,13 @@ export default function ActionButton({ data }: ActionButtonProps) {
         button = <GreyButton>Cycle Rollover (Inactive)</GreyButton>;
       } else if (!state.parameters.mint) {
         button = <GreyButton>Enter an amount</GreyButton>;
-      } else if (data?.account.balanceOftTOKE && state.parameters.mintbn.gt(data?.account.balanceOftTOKE)) {
+      } else if (data && state.parameters.mintbn.gt(data?.account.balanceOftTOKE)) {
         button = <GreyButton>Insufficient tTOKE balance</GreyButton>;
-      } else if (data?.vault.dust && (state.parameters.mintbn.eq(0) || state.parameters.mintbn.lt(data?.vault.dust))) {
+      } else if (data && data?.account.queuedOftTOKE.gt(0) && !data?.account.epoch.eq(data?.vault.cursor)) {
+        button = <GreyButton>You already have queued tTOKE</GreyButton>;
+      } else if (data && (state.parameters.mintbn.eq(0) || state.parameters.mintbn.lt(data?.vault.dust))) {
         button = <GreyButton>Amount too low</GreyButton>;
-      } else if (data?.vault.capacity && state.parameters.mintbn.gt(data?.vault.capacity)) {
+      } else if (data && state.parameters.mintbn.gt(data?.vault.capacity)) {
         button = <GreyButton>Amount exceeds capacity</GreyButton>;
       } else if (allowance && state.parameters.mintbn.gt(allowance)) {
         button = <BlueButton onClick={() => approve()}>Approve tTOKE</BlueButton>;

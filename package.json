@@ -6,6 +6,7 @@
     "comma-number": "^2.1.0",
     "ethers": "^5.5.4",
     "graphql": "^16.3.0",
+    "lodash": "^4.17.21",
     "matter-js": "^0.18.0",
     "millify": "^4.0.0",
     "pts": "^0.10.9",
@@ -26,6 +27,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.4.0",
+    "@types/lodash": "^4.14.178",
     "@types/node": "^17.0.12",
     "@types/react": "^17.0.38",
     "@types/react-bootstrap": "^0.32.29",
@@ -39,7 +41,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "faucet": "hardhat run ./src/scripts/faucet.js --network localhost",
+    "node": "hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y"
   },
   "eslintConfig": {
     "extends": [

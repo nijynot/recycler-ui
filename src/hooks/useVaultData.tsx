@@ -13,11 +13,13 @@ export type VaultData = {
     dust: BigNumber;
     capacity: BigNumber;
     rotating: boolean;
+    cursor: BigNumber;
   },
   account: {
     balanceOftTOKE: BigNumber;
     balanceOfretTOKE: BigNumber;
     queuedOftTOKE: BigNumber;
+    epoch: BigNumber;
   },
 };
 
@@ -39,6 +41,8 @@ export function useVaultData() {
       account && await recycler.balanceOf(account?.address),
       account && await recycler.queuedOf(account?.address),
       await recycler.rotating(),
+      await recycler.cursor(),
+      account && await recycler.bufferOf(account?.address),
     ]);
 
     const returndata = {
@@ -47,11 +51,13 @@ export function useVaultData() {
         dust: resolve[1],
         capacity: resolve[2],
         rotating: resolve[6],
+        cursor: resolve[7],
       },
       account: {
         balanceOftTOKE: resolve[3],
         balanceOfretTOKE: resolve[4],
         queuedOftTOKE: resolve[5],
+        epoch: resolve[8] ? BigNumber.from(resolve[8].epoch) : BigNumber.from(0),
       },
     };
 

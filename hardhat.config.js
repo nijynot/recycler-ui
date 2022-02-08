@@ -8,7 +8,10 @@ module.exports = {
       mining: {
         auto: false,
         interval: 5000
-      }
-    }
-  }
+      },
+      accounts: {
+        count: 10,
+      },
+    },
+  },
 };

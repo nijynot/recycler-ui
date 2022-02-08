@@ -1,10 +1,11 @@
 import { constants, utils } from 'ethers';
+import _ from 'lodash';
 import { useSpring } from 'react-spring';
 import styled from 'styled-components';
 
 import { UNIT } from '../../constants';
 import H2 from '../../components/H2';
-import { ReactorSkeleton, ReactorFuel } from '../../constants/svgs/ReactorFilled';
+import { ReactorCore, ReactorFuel, ReactorSkeleton } from '../../constants/svgs/ReactorFilled';
 import { useGlobalContext } from '../../contexts/GlobalContext';
 import { useVaultData } from '../../hooks/useVaultData';
 import { useMarketData } from '../../hooks/useMarketData';
@@ -157,7 +158,7 @@ export default function Vault() {
         }
 
         // render minimum 15 pixels of height
-        await next({ height: Math.max(current / capacity * 162, 15) });
+        await next({ height: _.clamp(current / capacity * 162, 110, 140) });
       }
     },
     config: {
@@ -232,7 +233,8 @@ export default function Vault() {
         <Recycler>
           <Name>TOKEMAK (RE)CYCLE VAULT</Name>
           <ReactorWrapper>
-            <ReactorSkeleton style={{ position: 'relative', zIndex: 100 }} />
+            <ReactorSkeleton/>
+            <ReactorCore />
             <ReactorFuel style={spring} />
           </ReactorWrapper>
           <Capacities>

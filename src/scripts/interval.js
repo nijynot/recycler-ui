@@ -2,9 +2,9 @@ const { network } = require('hardhat');
 
 async function main() {
   await network.provider.send("evm_setAutomine", [false]);
-  await network.provider.send("evm_setIntervalMining", [10000]);
+  await network.provider.send("evm_setIntervalMining", [5000]);
 
-  console.log('done!');
+  console.log('Interval-mining activated.');
 }
 
 main()
