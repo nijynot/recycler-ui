@@ -1,8 +1,9 @@
+import { animated } from 'react-spring';
 import styled from 'styled-components';
 
 import H1 from '../../../components/H1';
 
-const StatisticStyled = styled.div({
+const StatisticStyled = styled(animated.div)({
   flex: 1,
   margin: '0 24px',
 });
@@ -21,6 +22,7 @@ const Label = styled.div({
 });
 
 const Value = styled(H1)({
+  fontSize: 32,
   fontWeight: 600,
   margin: '6px 0',
 });
@@ -33,7 +35,7 @@ export const Statistics = styled.div({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  marginBottom: 48,
+  marginBottom: 64,
 });
 
 type StatisticProps = {
@@ -41,7 +43,8 @@ type StatisticProps = {
   value: string;
   comment: string;
   color?: string;
-  style?: React.CSSProperties;
+  // style?: React.CSSProperties;
+  style?: any;
 };
 
 export function Statistic({ label, value, comment, color, style }: StatisticProps) {

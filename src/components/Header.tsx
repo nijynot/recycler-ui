@@ -20,7 +20,7 @@ const HeaderWrapper = styled.div({
 });
 
 const Home = styled.a({
-  opacity: 0.5,
+  opacity: 0.75,
   transition: 'opacity .15s',
   ":hover": {
     opacity: 1,
@@ -41,7 +41,8 @@ export default function Header({ children }: HeaderProps) {
   return (
     <HeaderStyled>
       <HeaderWrapper>
-        <Home href="/">Automata</Home>
+        <Home href="/">The (Re)cycler</Home>
+        <span style={{ marginLeft: 4, opacity: 0.35 }}> by Automata Labs Inc.</span>
         <HeaderNavigation>
           {children}
         </HeaderNavigation>

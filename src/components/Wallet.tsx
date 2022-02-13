@@ -47,6 +47,7 @@ function MetaMask() {
 }
 
 const WalletStyled = styled.div({
+  alignItems: 'center',
   background: 'linear-gradient(180deg, #2C2C2C 0%, #222222 100%)',
   border: 0,
   boxShadow: `
@@ -54,14 +55,14 @@ const WalletStyled = styled.div({
     rgba(255, 255, 255, 0.1) 0px 0.5px 0px 0px inset,
     rgba(255, 255, 255, 0.12) 0px 0px 0px 1px inset`,
   borderRadius: 4,
-  color: 'rgba(255, 255, 255, 0.75)',
+  color: 'rgba(255, 255, 255, 0.8)',
   display: 'flex',
   fontSize: 12,
   fontWeight: 500,
-  gap: 8,
+  gap: 4,
   justifyContent: 'center',
   padding: '8px 10px',
-  width: 140,
+  width: 135,
 
   ':hover': {
     color: '#ffffff',
@@ -163,8 +164,10 @@ export default function Wallet() {
               <path opacity="0.449997" d="M0.311523 9.04102L5.49867 15.7138V11.8386L0.311523 9.04102Z" fill="white" fillOpacity="0.5"/>
               <path opacity="0.800003" d="M5.49805 11.8387V15.7138L10.6883 9.04108L5.49805 11.8387Z" fill="white" fillOpacity="0.5"/>
             </svg>
-            
-            {account.address.slice(0, 6) + '...' + account.address.substr(account.address.length - 4)}
+
+            <div style={{ flex: 1 }}>
+              {account.address.slice(0, 6) + '...' + account.address.substr(account.address.length - 4)}
+            </div>
           </WalletStyled>
         </Dropdown.Toggle>
 
@@ -176,7 +179,10 @@ export default function Wallet() {
     );
   } else {
     render = (
-      <WalletStyled onClick={() => open()}>
+      <WalletStyled
+        onClick={() => open()}
+        style={{ background: '#0a70ff' }}
+      >
         <svg width="11" height="16" viewBox="0 0 11 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path opacity="0.600006" d="M5.49866 5.99084L0.311523 8.14312L5.49866 10.9421L10.6858 8.14312L5.49866 5.99084Z" fill="white" fillOpacity="0.5"/>
           <path opacity="0.449997" d="M0.311523 8.14311L5.49867 10.9421V5.99082V0.286194L0.311523 8.14311Z" fill="white" fillOpacity="0.5"/>
@@ -184,7 +190,10 @@ export default function Wallet() {
           <path opacity="0.449997" d="M0.311523 9.04102L5.49867 15.7138V11.8386L0.311523 9.04102Z" fill="white" fillOpacity="0.5"/>
           <path opacity="0.800003" d="M5.49805 11.8387V15.7138L10.6883 9.04108L5.49805 11.8387Z" fill="white" fillOpacity="0.5"/>
         </svg>
-        Sign in with ETH
+
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          Connect Wallet
+        </div>
       </WalletStyled>
     );
   }

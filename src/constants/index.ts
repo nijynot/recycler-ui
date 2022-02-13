@@ -26,7 +26,8 @@ export const getAddressList = (chainId?: number) => {
     }
   } else {
     if (!chainId) {
-      return ADDRESS_LIST[31337];
+      // return ADDRESS_LIST[31337];
+      return ADDRESS_LIST[1337];
     } else {
       return (ADDRESS_LIST as AddressList)[chainId];
     }

@@ -6,8 +6,7 @@ const TabsStyled = styled.div({
   display: 'flex',
   justifyContent: 'center',
   marginBottom: 12,
-  marginTop: 18,
-  width: 328,
+  width: '100%',
 });
 
 const Tab = styled.button(({ active }: { active?: boolean; }) => ({
@@ -16,7 +15,7 @@ const Tab = styled.button(({ active }: { active?: boolean; }) => ({
   color: active ? 'white' : 'rgba(255, 255, 255, 0.35)',
   fontSize: 14,
   fontWeight: 500,
-  padding: 14,
+  padding: 16,
   transition: 'all 0.15s',
   width: '50%',
 
@@ -32,14 +31,14 @@ export default function Tabs() {
     <TabsStyled>
       <Tab
         active={state.tab === 0}
-        style={{ borderRadius: '4px 0 0 4px' }}
+        style={{ borderRadius: '8px 0 0 8px' }}
         onClick={() => dispatch({ type: 'tab', value: 0 })}
       >
         Deposit
       </Tab>
       <Tab
         active={state.tab === 1}
-        style={{ borderRadius: '0 4px 4px 0', borderLeft: 0 }}
+        style={{ borderRadius: '0 8px 8px 0', borderLeft: 0 }}
         onClick={() => dispatch({ type: 'tab', value: 1 })}
       >
         Withdraw

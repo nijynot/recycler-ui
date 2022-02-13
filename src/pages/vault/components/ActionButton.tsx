@@ -16,11 +16,12 @@ const Button = styled.button({
     rgba(0, 0, 0, 0.35) 0px -0.5px 0px 0px inset,
     rgba(255, 255, 255, 0.1) 0px 0.5px 0px 0px inset,
     rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset`,
-  borderRadius: 4,
+  borderRadius: 8,
   fontSize: 14,
   fontWeight: 450,
-  padding: '14px 16px',
-  width: 328,
+  padding: 17,
+  marginBottom: 4,
+  width: '100%',
 
   ':disabled': {
     cursor: 'not-allowed',
@@ -216,7 +217,7 @@ export default function ActionButton({ data }: ActionButtonProps) {
   if (approveWaitLoading) {
     button = <GreyButton>Waiting for confirmation...</GreyButton>;
   } else if (!account) {
-    button = <BlueButton onClick={() => openWalletModal()}>Sign in with ETH</BlueButton>;;
+    button = <BlueButton onClick={() => openWalletModal()}>Connect Wallet</BlueButton>;;
   } else {
     if (state.tab === 0) {
       if (data && data?.vault.rotating) {

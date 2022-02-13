@@ -7,40 +7,49 @@ const BalancesStyled = styled.div({
     rgba(0, 0, 0, 0.5) 0px -0.5px 0px 0px inset,
     rgba(255, 255, 255, 0.1) 0px 0.5px 0px 0px inset,
     rgba(255, 255, 255, 0.12) 0px 0px 0px 1px inset`,
-  borderRadius: '0 0 10px 10px',
+  borderRadius: 16,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: '32px 0 24px 0',
+  padding: '36px 40px',
   position: 'relative',
   top: '-2px',
+  maxWidth: 530,
+  margin: '0 auto',
 });
 
 const BalancesLabel = styled.div({
   flex: 1,
-  fontSize: 14,
+  fontSize: 12,
   fontWeight: 500,
   opacity: 0.5,
-  width: 328,
+  width: '100%',
   paddingBottom: 10,
   letterSpacing: '0.04em',
   marginBottom: 16,
   borderBottom: '1px solid rgba(255, 255, 255, 0.25)',
 });
 
+const BalanceList = styled.div({
+  display: 'flex',
+  gap: 40,
+});
+
 export function Balances({ children }: { children: React.ReactNode }) {
   return (
     <BalancesStyled>
       <BalancesLabel>YOUR BALANCE</BalancesLabel>
-      {children}
+      <BalanceList>
+        {children}
+      </BalanceList>
     </BalancesStyled>
   );
 }
 
 const BalanceStyled = styled.div({
-  width: 328,
   marginBottom: 12,
+  width: '100%',
 });
 
 const BalanceMain = styled.div({
@@ -62,7 +71,7 @@ const BalanceAmount = styled.div({
 
 const BalanceSymbol = styled.div({
   display: 'inline-block',
-  fontSize: 12,
+  fontSize: 14,
   fontWeight: 400,
   opacity: 0.5,
 });
@@ -71,6 +80,7 @@ const BalanceComment = styled.div({
   fontSize: 12,
   opacity: 0.25,
   lineHeight: 1.4211,
+  margin: '4px 0 12px 0',
 });
 
 type BalanceProps = {
@@ -91,12 +101,9 @@ export function Balance({ label, amount, symbol, comment }: BalanceProps) {
 
   return (
     <BalanceStyled>
-      <BalanceMain>
-        <BalanceLabel>{label}</BalanceLabel>
-        <BalanceAmount>{render}</BalanceAmount>
-      </BalanceMain>
-
+      <BalanceLabel>{label}</BalanceLabel>
       <BalanceComment>{comment}</BalanceComment>
+      <BalanceAmount>{render} <BalanceSymbol>{symbol}</BalanceSymbol></BalanceAmount>
     </BalanceStyled>
   );
 }
