@@ -200,8 +200,7 @@ export default function Vault() {
     from: { height: 0 },
     to: async (next) => {
       if (data) {
-        // let current = data?.vault.totalSupply.div(UNIT).toNumber();
-        let current = 100_000;
+        let current = data?.vault.totalSupply.div(UNIT).toNumber();
         let capacity;
 
         if (data?.vault.capacity.lt(constants.MaxUint256)) {
@@ -241,8 +240,7 @@ export default function Vault() {
     },
     to: async (next) => {
       if (data) {
-        // let current = data?.vault.totalSupply.div(UNIT).toNumber();
-        let current = 100_000;
+        let current = data?.vault.totalSupply.div(UNIT).toNumber();
         let capacity;
 
         if (data?.vault.capacity.lt(constants.MaxUint256)) {
@@ -254,8 +252,7 @@ export default function Vault() {
         } else {
           capacity = 100_000;
           await next({
-            // bottom: _.clamp(current / capacity * 162, 15, 115),
-            bottom: _.clamp(current / capacity * 162, 15, 162),
+            bottom: _.clamp(current / capacity * 162, 15, 115),
             opacity: 1,
           });
         }
@@ -268,8 +265,7 @@ export default function Vault() {
     from: { value: 0 },
     to: async (next) => {
       if (data) {
-        // await next({ value: data?.vault.totalSupply.div(UNIT).toNumber() });
-        await next({ value: 100_000 });
+        await next({ value: data?.vault.totalSupply.div(UNIT).toNumber() });
       }
     },
     config,
