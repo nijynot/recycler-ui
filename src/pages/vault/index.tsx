@@ -427,10 +427,10 @@ export default function Vault() {
         <Block>
           <H2 style={{ marginBottom: 10 }}>What is the (Re)cycler?</H2>
           <Paragraph>
-            The (re)cycler vault algorithmically choses the highest earning reactors <Italic>and</Italic> compounds your TOKE rewards every week.
+            The (Re)cycler is a vault that algorithmically votes the highest earning reactors <Italic>and</Italic> compounds your TOKE rewards every week.
           </Paragraph>
           <Paragraph>
-            This means that you can "put and forget" your TOKE in the vault, and it'll automatically maximise your profits.
+            This means that you can "put and forget" your TOKE in the vault, and it'll automatically maximise your profits, bypassing the need to spend gas every week to claim TOKE which is normally done on Tokemak.
           </Paragraph>
         </Block>
 
@@ -439,11 +439,11 @@ export default function Vault() {
 
         <Block>
           <Paragraph>
-            The (re)cycler also has a natural symbiotic relationship with Tokemak that is positive-sum.
+            The (Re)cycler is also a positive-sum primitive for Tokemak. This relates to Tokemak's equations for how rewards are calculated.
             <br />
             <br />
-            Noting Tokemak's equations: when the reactors are in balance, the rewards are increased for every staker.
-            The (re)cycler automates this and is an additive primitive for the larger Tokemak eco-system.
+            According to the rewards equations - when the reactors are in balance, that's also when the rewards are the highest.
+            This means when the (Re)cycler vault vote algorithmically, it'll also automatically balance the reactors, increasing the yield for stakers and the wider Tokemak eco-system.
           </Paragraph>
         </Block>
 
@@ -456,7 +456,7 @@ export default function Vault() {
             The (re)tTOKE is a token that is pegged 1:1 to tTOKE and will automatically increase in balance when rewards are paid out (akin to stETH's rebasing). 
             <br />
             <br />
-            When depositing tTOKE into the vault, and equal amount of (re)tTOKE will be minted - and when (re)tTOKE is burned, the tTOKE will be redeemed.
+            When depositing tTOKE into the vault, and equal amount of (re)tTOKE will be minted - and when (re)tTOKE is burned, the tTOKE is redeemed.
           </Paragraph>
         </Block>
 
@@ -465,10 +465,10 @@ export default function Vault() {
 
         <Block>
           <Paragraph>
-            Similarly to Tokemak itself, you do not start earning rewards as soon as you deposit into the (re)cycler vault - instead you're eligible for rewards at the start of the next weekly cycle.
+            Similarly to Tokemak itself, you do not start earning rewards as soon as you deposit into the (Re)cycler vault - instead you're eligible for rewards at the start of the next weekly cycle.
             <br />
             <br />
-            Upon depositing tTOKE, (re)tTOKE will first be zero. This is expected. When the next cycle begins, your (re)tTOKE balance will automatically show up in your wallet (no transaction is needed for this).
+            Upon depositing tTOKE, (re)tTOKE will first be zero - this is expected. When the next cycle begins, your (re)tTOKE balance will automatically show up in your wallet (no transaction is needed for this).
           </Paragraph>
         </Block>
 
@@ -482,22 +482,17 @@ export default function Vault() {
               <Paragraph>
                 <Bold style={{ paddingBottom: 2, display: 'inline-block' }}>Slashing Risk</Bold><br />
                 The vault has similar risks to Tokemak itself. When voting with Tokemak, it's possible that tTOKE can be slashed.
-                As such, we're introducing a constraint on which reactors can be voted on is desireable, and will be maintained by the laboratory.
-                <br />
-                <br />
-                Below are the reactors that the (re)cycler vault can currently vote on.
+                As such, we're introducing a constraint on which reactors can be voted and is maintained by the laboratory for now.
               </Paragraph>
             </Item>
-          </List>
 
-          <List>
             <Item>
               <Paragraph>
                 <Bold style={{ paddingBottom: 2, display: 'inline-block' }}>Contract Risk</Bold><br />
-                The contracts have not been audited and we advise users to deposit with caution, and only risk funds they can afford to potentially lose.
+                The contracts have not been audited and we advise users to deposit with caution and only risk funds they can afford to potentially lose.
               </Paragraph>
             </Item>
-            
+
             <Item>  
               <Paragraph>
                 <Bold style={{ paddingBottom: 2, display: 'inline-block' }}>Key Management Risk</Bold><br />
