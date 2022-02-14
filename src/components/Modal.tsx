@@ -9,7 +9,7 @@ export default function Modal({ children, ...props }: ModalProps) {
   return (
     <BootstrapModal
       animation={false}
-      style={{ marginTop: 128 }}
+      style={{ marginTop: 128, zIndex: 999999 }}
       {...props}
     >
       {children}

@@ -1,6 +1,8 @@
 import { BigNumber, utils } from 'ethers';
 import styled from 'styled-components';
 
+import { toTwoDecimals } from '../../../utils';
+
 const BalancesStyled = styled.div({
   background: '#252525',
   boxShadow: `
@@ -94,7 +96,7 @@ export function Balance({ label, amount, symbol, comment }: BalanceProps) {
   let render;
 
   if (amount) {
-    render = utils.formatUnits(amount, 18).toString()
+    render = toTwoDecimals(utils.formatUnits(amount, 18).toString())
   } else {
     render = '-';
   }
