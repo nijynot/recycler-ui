@@ -54,11 +54,11 @@ const BalanceStyled = styled.div({
   width: '100%',
 });
 
-const BalanceMain = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: 4,
-});
+// const BalanceMain = styled.div({
+//   display: 'flex',
+//   alignItems: 'center',
+//   marginBottom: 4,
+// });
 
 const BalanceLabel = styled.div({
   flex: 1,

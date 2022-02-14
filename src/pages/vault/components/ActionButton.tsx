@@ -44,9 +44,9 @@ const GreenButton = styled(Button)({
   background: '#25a948',
 });
 
-const RedButton = styled(Button)({
-  background: 'rgb(255, 59, 48)',
-});
+// const RedButton = styled(Button)({
+//   background: 'rgb(255, 59, 48)',
+// });
 
 type ActionButtonProps = {
   data?: VaultData;

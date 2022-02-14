@@ -1,4 +1,4 @@
-import { BigNumber, constants, utils } from 'ethers';
+import { constants, utils } from 'ethers';
 import _ from 'lodash';
 import { animated, useSpring } from 'react-spring';
 import styled from 'styled-components';
