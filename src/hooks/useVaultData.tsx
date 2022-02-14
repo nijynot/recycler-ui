@@ -31,20 +31,20 @@ export function useVaultData() {
   const [{ data: account }] = useAccount();
 
   const tTOKE = new Contract(getAddressList().TokeVotePool, ERC20ABI, provider);
-  const recycler =  new Contract(getAddressList().Recycler, RecyclerABI as ContractInterface, provider);
+  const recycler = new Contract(getAddressList().Recycler, RecyclerABI as ContractInterface, provider);
 
   const call = async () => {
     const resolve = await Promise.all([
-      await recycler.totalSupply(),
-      await recycler.dust(),
-      await recycler.capacity(),
-      account && await tTOKE.balanceOf(account?.address),
-      account && await recycler.balanceOf(account?.address),
-      account && await recycler.queuedOf(account?.address),
-      await recycler.rotating(),
-      await recycler.cursor(),
-      account && await recycler.bufferOf(account?.address),
-      await recycler.fee(),
+      recycler.totalSupply(),
+      recycler.dust(),
+      recycler.capacity(),
+      account && tTOKE.balanceOf(account?.address),
+      account && recycler.balanceOf(account?.address),
+      account && recycler.queuedOf(account?.address),
+      recycler.rotating(),
+      recycler.cursor(),
+      account && recycler.bufferOf(account?.address),
+      recycler.fee(),
     ]);
 
     const returndata = {

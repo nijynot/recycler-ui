@@ -35,7 +35,7 @@ export const Statistics = styled.div({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  marginBottom: 64,
+  marginBottom: 48,
 });
 
 type StatisticProps = {

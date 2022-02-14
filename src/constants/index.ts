@@ -6,7 +6,7 @@ import CHAIN_ID_LIST from './lists/ChainIdList.json';
 export const UNIT = BigNumber.from(10).pow(18);
 
 export const isSupportedChain = (chainId: number) => {
-  if (process.env.REACT_APP_NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     return [1].includes(chainId);
   } else {
     if (CHAIN_ID_LIST.includes(chainId)) {
@@ -22,7 +22,7 @@ export const getAddressList = (chainId?: number) => {
     [chainId: string]: any,
   };
 
-  if (process.env.REACT_APP_NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     if (!chainId) {
       return ADDRESS_LIST[1];
     } else {

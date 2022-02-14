@@ -190,13 +190,32 @@ export default function Vault() {
     friction: 100,
     clamp: true,
     precision: 0.2,
-    // decay: 0.997,
   };
 
   const { state, dispatch } = useGlobalContext();
 
   const { data: market } = useMarketData();
   const { data } = useVaultData();
+  
+  const springOpacity = useSpring({
+    from: { opacity: 0 },
+    to: async (next) => {
+      if (data) {
+        await next({ opacity: 1 });
+      }
+    },
+    config,
+  });
+  
+  const springOpacityPartial = useSpring({
+    from: { opacity: 0.1 },
+    to: async (next) => {
+      if (data) {
+        await next({ opacity: 1 });
+      }
+    },
+    // config,
+  });
 
   const springFuel = useSpring({
     from: { height: 0 },
@@ -338,6 +357,7 @@ export default function Vault() {
               width: 64,
               left: 0,
               zIndex: 10000,
+              ...springOpacity,
             }}
           />
           <IndicatorCapacity
@@ -348,8 +368,8 @@ export default function Vault() {
             value={springNumber.value.to((v): number => comma(Math.floor(v)))}
             style={springSupply}
           />
-          <ReactorSkeleton/>
-          <ReactorCore />
+          <ReactorSkeleton />
+          <ReactorCore style={springOpacityPartial} />
           <ReactorFuel style={springFuel} />
         </ReactorWrapper>
 

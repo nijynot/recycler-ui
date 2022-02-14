@@ -14,11 +14,15 @@ const connectors = () => {
   return [new InjectedConnector({ chains: defaultChains })];
 };
 
-const provider = () => {
+const provider = ({ chainId }: any) => {
   if (process.env.NODE_ENV === 'production') {
     return new providers.JsonRpcProvider('https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y');
   } else {
-    return new providers.JsonRpcProvider('http://localhost:8545');
+    if (chainId === 1) {
+      return new providers.JsonRpcProvider('https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y');
+    } else {
+      return new providers.JsonRpcProvider('http://localhost:8545');
+    }
   }
 };
 
