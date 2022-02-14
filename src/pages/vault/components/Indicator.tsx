@@ -32,7 +32,12 @@ export function IndicatorCapacity({ value, style }: IndicatorCapacityProps) {
     if (value.eq(constants.MaxUint256)) {
       render = '∞';
     } else {
-      render = millify(value.div(UNIT).toNumber());
+      try {
+        render = millify(value.div(UNIT).toNumber());
+      } catch (e) {
+        render = '∞';
+        console.error(e);
+      }
     }
   } else {
     render = '-';

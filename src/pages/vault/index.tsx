@@ -1,4 +1,4 @@
-import { constants, utils } from 'ethers';
+import { BigNumber, constants, utils } from 'ethers';
 import _ from 'lodash';
 import { animated, useSpring } from 'react-spring';
 import styled from 'styled-components';
@@ -240,19 +240,21 @@ export default function Vault() {
     },
     to: async (next) => {
       if (data) {
-        let current = data?.vault.totalSupply.div(UNIT).toNumber();
-        let capacity;
+        let current: BigNumber = data?.vault.totalSupply;
+        let capacity: BigNumber;
 
         if (data?.vault.capacity.lt(constants.MaxUint256)) {
-          capacity = data?.vault.capacity.div(UNIT).toNumber();
+          capacity = data?.vault.capacity;
+
           await next({
-            bottom: _.clamp(current / capacity * 162, 15, 162),
+            bottom: _.clamp(current.div(capacity).mul(162).toNumber(), 15, 162),
             opacity: 1,
           });
         } else {
-          capacity = 100_000;
+          capacity = BigNumber.from(100_000);
+
           await next({
-            bottom: _.clamp(current / capacity * 162, 15, 115),
+            bottom: _.clamp(current.div(capacity).mul(162).toNumber(), 15, 115),
             opacity: 1,
           });
         }
@@ -398,7 +400,7 @@ export default function Vault() {
           </Output>
           <Output>
             <OutputLabel>Vault fee (only on weekly-rewards)</OutputLabel>
-            1
+            {data ? data?.vault.fee.toNumber() / 100 : '-'}
             <OutputGrey>%</OutputGrey>
           </Output>
         </Recycler>

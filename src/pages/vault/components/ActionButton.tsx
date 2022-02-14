@@ -230,7 +230,7 @@ export default function ActionButton({ data }: ActionButtonProps) {
         button = <GreyButton>You already have queued tTOKE</GreyButton>;
       } else if (data && (state.parameters.mintbn.eq(0) || state.parameters.mintbn.lt(data?.vault.dust))) {
         button = <GreyButton>Amount too low</GreyButton>;
-      } else if (data && state.parameters.mintbn.gt(data?.vault.capacity)) {
+      } else if (data && (state.parameters.mintbn.add(data?.vault.totalSupply)).gt(data?.vault.capacity)) {
         button = <GreyButton>Amount exceeds capacity</GreyButton>;
       } else if (allowance && state.parameters.mintbn.gt(allowance)) {
         button = <BlueButton onClick={() => approve()}>Approve tTOKE</BlueButton>;

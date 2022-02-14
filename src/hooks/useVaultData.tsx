@@ -14,6 +14,7 @@ export type VaultData = {
     capacity: BigNumber;
     rotating: boolean;
     cursor: BigNumber;
+    fee: BigNumber;
   },
   account: {
     balanceOftTOKE: BigNumber;
@@ -43,6 +44,7 @@ export function useVaultData() {
       await recycler.rotating(),
       await recycler.cursor(),
       account && await recycler.bufferOf(account?.address),
+      await recycler.fee(),
     ]);
 
     const returndata = {
@@ -52,6 +54,7 @@ export function useVaultData() {
         capacity: resolve[2],
         rotating: resolve[6],
         cursor: resolve[7],
+        fee: resolve[9],
       },
       account: {
         balanceOftTOKE: resolve[3],

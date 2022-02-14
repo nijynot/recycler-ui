@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "comma-number": "^2.1.0",
-    "ethers": "^5.5.4",
     "graphql": "^16.3.0",
     "lodash": "^4.17.21",
     "matter-js": "^0.18.0",
@@ -22,6 +21,7 @@
     "wagmi": "^0.2.6"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@react-spring/types": "^9.4.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -34,6 +34,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.21",
+    "ethers": "^5.5.4",
     "hardhat": "^2.8.4",
     "web-vitals": "^2.1.4"
   },
@@ -42,8 +43,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "node": "hardhat --show-stack-traces node --fork https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y --fork-block-number 14167146",
+    "node": "hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y --fork-block-number 14167146",
     "faucet": "hardhat run ./src/scripts/faucet.js --network localhost",
+    "rollover": "hardhat run ./src/scripts/rollover.js --network localhost",
+    "capacity": "hardhat run ./src/scripts/capacity.js --network localhost",
     "automine": "hardhat run ./src/scripts/automine.js --network localhost"
   },
   "eslintConfig": {

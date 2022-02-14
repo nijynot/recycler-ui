@@ -4,7 +4,22 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "coin_",
+        "name": "underlying_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "derivative_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "onchainvote_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "rewards_",
         "type": "address"
       },
       {
@@ -13,6 +28,19 @@
         "type": "uint256"
       }
     ]
+  },
+  {
+    "type": "function",
+    "name": "DESTROY",
+    "inputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -202,35 +230,6 @@
   },
   {
     "type": "function",
-    "name": "burnable",
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "coins",
-        "type": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "capacity",
     "inputs": [],
     "outputs": [
@@ -244,16 +243,45 @@
   },
   {
     "type": "function",
-    "name": "coin",
-    "inputs": [],
-    "outputs": [
+    "name": "claim",
+    "inputs": [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        "internalType": "struct IRewards.Recipient",
+        "name": "recipient",
+        "type": "tuple",
+        "components": [
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "address"
+          },
+          {
+            "type": "uint256"
+          }
+        ]
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
       }
     ],
-    "stateMutability": "view"
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -267,6 +295,48 @@
       }
     ],
     "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "cycle",
+    "inputs": [
+      {
+        "internalType": "struct IRewards.Recipient",
+        "name": "recipient",
+        "type": "tuple",
+        "components": [
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "address"
+          },
+          {
+            "type": "uint256"
+          }
+        ]
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -289,6 +359,32 @@
         "internalType": "address",
         "name": "addr",
         "type": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "derivative",
+    "inputs": [],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "destroy",
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "sig",
+        "type": "bytes4"
       }
     ],
     "outputs": [],
@@ -384,6 +480,11 @@
         "type": "address[]"
       },
       {
+        "internalType": "uint256[]",
+        "name": "values",
+        "type": "uint256[]"
+      },
+      {
         "internalType": "bytes[]",
         "name": "datas",
         "type": "bytes[]"
@@ -400,26 +501,16 @@
   },
   {
     "type": "function",
-    "name": "exit",
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
+    "name": "fee",
+    "inputs": [],
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "buffer",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -439,6 +530,51 @@
       }
     ],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "keys",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "locked",
+    "inputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "maintainer",
+    "inputs": [],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -465,30 +601,6 @@
   },
   {
     "type": "function",
-    "name": "mintable",
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "buffer",
-        "type": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "name",
     "inputs": [],
     "outputs": [
@@ -498,7 +610,7 @@
         "type": "string"
       }
     ],
-    "stateMutability": "pure"
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -534,6 +646,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "onchainvote",
+    "inputs": [],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view"
@@ -634,6 +759,19 @@
   },
   {
     "type": "function",
+    "name": "prepare",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "queuedOf",
     "inputs": [
       {
@@ -650,6 +788,94 @@
       }
     ],
     "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "quit",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "buffer",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "rewards",
+    "inputs": [],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "rollover",
+    "inputs": [
+      {
+        "internalType": "struct IRewards.Recipient",
+        "name": "recipient",
+        "type": "tuple",
+        "components": [
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "address"
+          },
+          {
+            "type": "uint256"
+          }
+        ]
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "epoch",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32",
+        "name": "deadline",
+        "type": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -685,17 +911,100 @@
   },
   {
     "type": "function",
-    "name": "set",
+    "name": "setCapacity",
     "inputs": [
       {
-        "internalType": "bytes4",
-        "name": "selector",
-        "type": "bytes4"
+        "internalType": "uint256",
+        "name": "capacity_",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setDeadline",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "epoch",
+        "type": "uint256"
       },
       {
-        "internalType": "bytes",
-        "name": "data",
-        "type": "bytes"
+        "internalType": "uint32",
+        "name": "deadline",
+        "type": "uint32"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setDust",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "dust_",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setFee",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "fee_",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setKey",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "value",
+        "type": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMaintainer",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "maintainer_",
+        "type": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setName",
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name_",
+        "type": "string"
       }
     ],
     "outputs": [],
@@ -719,6 +1028,37 @@
       }
     ],
     "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "stake",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "sweep",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -840,6 +1180,19 @@
   },
   {
     "type": "function",
+    "name": "underlying",
+    "inputs": [],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "unpause",
     "inputs": [
       {
@@ -863,6 +1216,47 @@
       }
     ],
     "stateMutability": "pure"
+  },
+  {
+    "type": "function",
+    "name": "vote",
+    "inputs": [
+      {
+        "internalType": "struct IOnChainVoteL1.UserVotePayload",
+        "name": "data",
+        "type": "tuple",
+        "components": [
+          {
+            "type": "address"
+          },
+          {
+            "type": "bytes32"
+          },
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "uint256"
+          },
+          {
+            "type": "tuple[]",
+            "components": [
+              {
+                "type": "bytes32"
+              },
+              {
+                "type": "uint256"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "event",
@@ -932,6 +1326,18 @@
       {
         "name": "addr",
         "type": "address",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Destroyed",
+    "inputs": [
+      {
+        "name": "sig",
+        "type": "bytes4",
         "indexed": false
       }
     ],
@@ -1049,21 +1455,69 @@
   },
   {
     "type": "event",
-    "name": "Set",
+    "name": "SetCapacity",
     "inputs": [
       {
-        "name": "sender",
-        "type": "address",
-        "indexed": true
+        "name": "capacity",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SetDeadline",
+    "inputs": [
+      {
+        "name": "epoch",
+        "type": "uint256",
+        "indexed": false
       },
       {
-        "name": "selector",
-        "type": "bytes4",
-        "indexed": true
+        "name": "deadline",
+        "type": "uint32",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SetDust",
+    "inputs": [
+      {
+        "name": "dust",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SetKey",
+    "inputs": [
+      {
+        "name": "key",
+        "type": "bytes32",
+        "indexed": false
       },
       {
-        "name": "data",
-        "type": "bytes",
+        "name": "value",
+        "type": "bool",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SetName",
+    "inputs": [
+      {
+        "name": "name",
+        "type": "string",
         "indexed": false
       }
     ],
@@ -1135,12 +1589,32 @@
   },
   {
     "type": "error",
+    "name": "InvalidDeadline",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "InvalidEpoch",
     "inputs": []
   },
   {
     "type": "error",
+    "name": "InvalidFee",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "InvalidSignature",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidToken",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Locked",
     "inputs": []
   },
   {
