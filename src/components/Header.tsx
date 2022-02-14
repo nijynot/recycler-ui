@@ -27,6 +27,13 @@ const Home = styled.a({
   },
 })
 
+const Labs = styled.a({
+  transition: 'color .15s',
+  ':hover': {
+    color: 'rgba(255, 255, 255, 0.75)',
+  }
+});
+
 const HeaderNavigation = styled.div({
   display: 'flex',
   flex: 1,
@@ -42,7 +49,9 @@ export default function Header({ children }: HeaderProps) {
     <HeaderStyled>
       <HeaderWrapper>
         <Home href="/">The (Re)cycler</Home>
-        <span style={{ marginLeft: 4, opacity: 0.35 }}> by Automata Labs Inc.</span>
+        <span style={{ marginLeft: 4, color: 'rgba(255, 255, 255, 0.35)' }}>
+          by <Labs href="https://automata.fi">Automata Labs Inc.</Labs>
+        </span>
         <HeaderNavigation>
           {children}
         </HeaderNavigation>

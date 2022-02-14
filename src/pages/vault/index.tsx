@@ -189,6 +189,8 @@ export default function Vault() {
     mass: 15,
     friction: 100,
     clamp: true,
+    precision: 0.2,
+    // decay: 0.997,
   };
 
   const { state, dispatch } = useGlobalContext();
@@ -499,10 +501,7 @@ export default function Vault() {
             <Item>  
               <Paragraph>
                 <Bold style={{ paddingBottom: 2, display: 'inline-block' }}>Key Management Risk</Bold><br />
-                Automata Labs Inc. holds admin keys to a proxy-like contract for vault management and is exposed to the risk of e.g. being hacked.
-                <br />
-                <br />
-                There are two roles to segment to the risk. One key to manage the vault compounding and voting and a multi-sig to manage upgrades.
+                Automata Labs Inc. holds admin keys to a partially-upgradeable contract for vault management, and is exposed to the risk of e.g. being hacked.
               </Paragraph>
             </Item>
           </List>
