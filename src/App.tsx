@@ -34,6 +34,9 @@ const Main = styled.main({
   margin: '0 auto',
   maxWidth: 652,
   padding: '8rem 0 1.25rem 0',
+  '@media (max-width: 500px)': {
+    padding: '8rem 20px 1.25rem 20px',
+  },
 });
 
 export default function App() {

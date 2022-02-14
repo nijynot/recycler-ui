@@ -1,3 +1,4 @@
+import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 const HeaderStyled = styled.header({
@@ -9,6 +10,10 @@ const HeaderStyled = styled.header({
   WebkitBackdropFilter: 'saturate(180%) blur(8px)',
   width: '100%',
   zIndex: 333,
+
+  '@media (max-width: 500px)': {
+    padding: '0 20px 0 20px',
+  },
 });
 
 const HeaderWrapper = styled.div({
@@ -45,13 +50,17 @@ type HeaderProps = {
 }
 
 export default function Header({ children }: HeaderProps) {
+  const isMobile = useMediaQuery({ query: '(max-width: 500px)' });
+  
   return (
     <HeaderStyled>
       <HeaderWrapper>
         <Home href="/">The (Re)cycler</Home>
-        <span style={{ marginLeft: 4, color: 'rgba(255, 255, 255, 0.35)' }}>
-          by <Labs href="https://automata.fi">Automata Labs Inc.</Labs>
-        </span>
+        {!isMobile && (
+          <span style={{ marginLeft: 4, color: 'rgba(255, 255, 255, 0.35)' }}>
+            by <Labs href="https://automata.fi">Automata Labs Inc.</Labs>
+          </span>
+        )}
         <HeaderNavigation>
           {children}
         </HeaderNavigation>
