@@ -14,9 +14,9 @@ const connectors = () => {
   return [new InjectedConnector({ chains: defaultChains })];
 };
 
-const provider = ({ chainId }: any) => {
+const provider = () => {
   if (process.env.NODE_ENV === 'production') {
-    return new providers.AlchemyProvider(chainId, '5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y');
+    return new providers.JsonRpcProvider('https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y');
   } else {
     return new providers.JsonRpcProvider('http://localhost:8545');
   }
