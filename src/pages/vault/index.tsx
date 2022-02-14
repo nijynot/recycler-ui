@@ -240,21 +240,21 @@ export default function Vault() {
     },
     to: async (next) => {
       if (data) {
-        let current: BigNumber = data?.vault.totalSupply;
-        let capacity: BigNumber;
+        let current = data?.vault.totalSupply.div(UNIT).toNumber();
+        let capacity;
 
         if (data?.vault.capacity.lt(constants.MaxUint256)) {
-          capacity = data?.vault.capacity;
+          capacity = data?.vault.capacity.div(UNIT).toNumber();
 
           await next({
-            bottom: _.clamp(current.div(capacity).mul(162).toNumber(), 15, 162),
+            bottom: _.clamp(current / capacity * 162, 15, 162),
             opacity: 1,
           });
         } else {
-          capacity = BigNumber.from(100_000);
+          capacity = 100_000;
 
           await next({
-            bottom: _.clamp(current.div(capacity).mul(162).toNumber(), 15, 115),
+            bottom: _.clamp(current / capacity * 162, 15, 115),
             opacity: 1,
           });
         }
