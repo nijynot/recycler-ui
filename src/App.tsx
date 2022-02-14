@@ -16,7 +16,7 @@ const connectors = () => {
 
 const provider = ({ chainId }: any) => {
   if (process.env.NODE_ENV === 'production') {
-    return new providers.AlchemyProvider(chainId, '');
+    return new providers.AlchemyProvider(chainId, '5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y');
   } else {
     return new providers.JsonRpcProvider('http://localhost:8545');
   }
