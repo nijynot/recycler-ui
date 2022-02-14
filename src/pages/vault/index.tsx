@@ -381,7 +381,7 @@ export default function Vault() {
               ...springStatistic,
             }}
             label="APR"
-            value={data?.vault.totalSupply ? '51.94%' : '-'}
+            value={data?.vault.totalSupply ? '48.95%' : '-'}
             comment="+9%↑ on (Re)cycler"
             color="rgb(48, 245, 109)"
           />
