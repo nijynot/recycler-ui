@@ -463,7 +463,7 @@ export default function Vault() {
             <br />
             <br />
             According to the rewards equations - when the reactors are in balance, that's also when the rewards are the highest.
-            This means when the (Re)cycler vault vote algorithmically, it'll also automatically balance the reactors, increasing the yield for stakers and the wider Tokemak eco-system.
+            This means when the (Re)cycler vault votes algorithmically, it'll also contribute to the equilibrium of the reactors, increasing the yield for stakers and the wider Tokemak eco-system.
           </Paragraph>
         </Block>
 
