@@ -64,7 +64,7 @@ export default function Dev() {
           BigNumber.from(chainId),
           BigNumber.from(totalVotes),
           [
-            [reactorKey, 0],
+            [reactorKey, BigNumber.from(reactorVotes)],
           ],
         ]);
 
