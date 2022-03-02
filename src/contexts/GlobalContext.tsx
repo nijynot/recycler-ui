@@ -13,9 +13,11 @@ type State = {
   },
   parameters: {
     mint: string;
-    burn: string;
+    request: string;
+    withdraw: string;
     mintbn: BigNumber;
-    burnbn: BigNumber;
+    requestbn: BigNumber;
+    withdrawbn: BigNumber;
   },
   user?: {
     allowance?: BigNumber;
@@ -34,9 +36,11 @@ const defaultState: State = {
   },
   parameters: {
     mint: '',
-    burn: '',
+    request: '',
+    withdraw: '',
     mintbn: BigNumber.from(0),
-    burnbn: BigNumber.from(0),
+    requestbn: BigNumber.from(0),
+    withdrawbn: BigNumber.from(0),
   },
 };
 
@@ -48,7 +52,8 @@ type Action =
   | { type: 'modals.isSuccessModalOpen', value: boolean }
   | { type: 'modals.isErrorModalOpen', value: boolean }
   | { type: 'parameters.mint', value: string }
-  | { type: 'parameters.burn', value: string }
+  | { type: 'parameters.request', value: string }
+  | { type: 'parameters.withdraw', value: string }
   | { type: 'user.allowance', value: BigNumber };
 
 const defaultDispatch: React.Dispatch<Action> = () => {
@@ -86,10 +91,16 @@ function reducer(state: State, action: Action): State {
     next.parameters.mintbn = value ? utils.parseUnits(value as string, 18) : BigNumber.from(0);
 
     return next;
-  } else if (type === 'parameters.burn') {
+  } else if (type === 'parameters.request') {
     let next = { ...state };
-    next.parameters.burn = value as string;
-    next.parameters.burnbn = value ? utils.parseUnits(value as string, 18) : BigNumber.from(0);
+    next.parameters.request = value as string;
+    next.parameters.requestbn = value ? utils.parseUnits(value as string, 18) : BigNumber.from(0);
+
+    return next;
+  } else if (type === 'parameters.withdraw') {
+    let next = { ...state };
+    next.parameters.withdraw = value as string;
+    next.parameters.withdrawbn = value ? utils.parseUnits(value as string, 18) : BigNumber.from(0);
 
     return next;
   } else if (type) {

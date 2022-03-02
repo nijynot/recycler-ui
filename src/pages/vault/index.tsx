@@ -1,7 +1,9 @@
 import { constants, utils } from 'ethers';
 import _ from 'lodash';
+import { useMemo } from 'react';
 import { animated, useSpring } from 'react-spring';
 import styled from 'styled-components';
+import { useContractRead } from 'wagmi';
 
 import Bold from '../../components/Bold';
 import Figure from '../../components/Figure';
@@ -11,15 +13,18 @@ import { List, Item } from '../../components/List';
 import Paragraph from '../../components/Paragraph';
 import { UNIT } from '../../constants';
 import Figure0 from '../../constants/images/recycler-strategy.png';
-import Figure1 from '../../constants/images/rettoke.png';
+import Figure1 from '../../constants/images/retoke.png';
+import RecyclerVaultV1 from '../../constants/abis/RecyclerVaultV1.json';
 import { ReactorCore, ReactorFuel, ReactorSkeleton } from '../../constants/svgs/ReactorFilled';
 import { useGlobalContext } from '../../contexts/GlobalContext';
 import { useVaultData } from '../../hooks/useVaultData';
 import { useMarketData } from '../../hooks/useMarketData';
 import NumericalInput from '../../shared/components/NumericalInput';
+import { getAddressList } from '../../constants';
+import { toDecimals } from '../../utils';
 
 import ActionButton from './components/ActionButton';
-import { Balance, Balances } from './components/Balances';
+import { Balance, BalanceShares, Balances } from './components/Balances';
 import { Statistics, Statistic } from './components/Statistics';
 import Tabs from './components/Tabs';
 import SuccessModal from './components/SuccessModal';
@@ -142,10 +147,10 @@ const Symbol = styled.div({
 });
 
 const HorizontalDivider = styled.div({
-  height: 1,
-  background: 'rgba(255, 255, 255, 0.17)',
-  margin: '64px auto',
-  maxWidth: 530,
+  height: 16,
+  // background: 'rgba(255, 255, 255, 0.17)',
+  // margin: '32x auto 16px auto',
+  // maxWidth: 530,
 });
 
 const Block = styled.div({
@@ -196,6 +201,43 @@ export default function Vault() {
 
   const { data: market } = useMarketData();
   const { data } = useVaultData();
+
+  const [{ data: convertToShares }] = useContractRead(
+    {
+      addressOrName: getAddressList().RecyclerProxy,
+      contractInterface: RecyclerVaultV1,
+    },
+    'convertToShares',
+    {
+      args: useMemo(() => (
+        [state.parameters.mintbn]
+      ), [state.parameters.mintbn]),
+    },
+  );
+  const [{ data: previewDeposit }] = useContractRead(
+    {
+      addressOrName: getAddressList().RecyclerProxy,
+      contractInterface: RecyclerVaultV1,
+    },
+    'previewDeposit',
+    {
+      args: useMemo(() => (
+        [state.parameters.mintbn]
+      ), [state.parameters.mintbn]),
+    },
+  );
+  const [{ data: previewRequest }] = useContractRead(
+    {
+      addressOrName: getAddressList().RecyclerProxy,
+      contractInterface: RecyclerVaultV1,
+    },
+    'previewRequest',
+    {
+      args: useMemo(() => (
+        [state.parameters.requestbn]
+      ), [state.parameters.requestbn]),
+    },
+  );
   
   const springOpacity = useSpring({
     from: { opacity: 0 },
@@ -221,7 +263,7 @@ export default function Vault() {
     from: { height: 0 },
     to: async (next) => {
       if (data) {
-        let current = data?.vault.totalSupply.div(UNIT).toNumber();
+        let current = data?.vault.totalAssets.div(UNIT).toNumber();
         let capacity;
 
         if (data?.vault.capacity.lt(constants.MaxUint256)) {
@@ -229,7 +271,7 @@ export default function Vault() {
           // render minimum 15 pixels of height
           await next({ height: _.clamp(current / capacity * 162, 15, 162) });
         } else {
-          // hard-set 100k tTOKE as the ceil
+          // hard-set 100k TOKE as the ceil
           // not expected to be used as we expect capacity to be defined and slowly increased
           capacity = 100_000;
           // render minimum 15 pixels of height
@@ -261,7 +303,7 @@ export default function Vault() {
     },
     to: async (next) => {
       if (data) {
-        let current = data?.vault.totalSupply.div(UNIT).toNumber();
+        let current = data?.vault.totalAssets.div(UNIT).toNumber();
         let capacity;
 
         if (data?.vault.capacity.lt(constants.MaxUint256)) {
@@ -288,7 +330,7 @@ export default function Vault() {
     from: { value: 0 },
     to: async (next) => {
       if (data) {
-        await next({ value: data?.vault.totalSupply.div(UNIT).toNumber() });
+        await next({ value: data?.vault.totalAssets.div(UNIT).toNumber() });
       }
     },
     config,
@@ -308,7 +350,9 @@ export default function Vault() {
     if (state.tab === 0)
       return state.parameters.mint;
     else if (state.tab === 1)
-      return state.parameters.burn;
+      return state.parameters.request;
+    else if (state.tab === 2)
+      return state.parameters.withdraw;
     else
       throw new Error(`Tab "${state.tab}" does not exist.`);
   }
@@ -317,18 +361,23 @@ export default function Vault() {
     if (state.tab === 0)
       dispatch({ type: 'parameters.mint', value: amount });
     else if (state.tab === 1)
-      dispatch({ type: 'parameters.burn', value: amount });
+      dispatch({ type: 'parameters.request', value: amount });
+    else if (state.tab === 2)
+      dispatch({ type: 'parameters.withdraw', value: amount });
     else
       throw new Error(`Tab "${state.tab}" does not exist.`);
   }
 
   const max = () => {
     if (state.tab === 0) {
-      if (!data?.account.balanceOftTOKE) return;
-      dispatch({ type: 'parameters.mint', value: utils.formatUnits(data?.account.balanceOftTOKE, 18) });
+      if (!data?.account.maxDeposit) return;
+      dispatch({ type: 'parameters.mint', value: utils.formatUnits(data?.account.maxDeposit, 18) });
     } else if (state.tab === 1) {
-      if (!data?.account.balanceOfretTOKE) return;
-      dispatch({ type: 'parameters.burn', value: utils.formatUnits(data?.account.balanceOfretTOKE, 18) });
+      if (!data?.account.maxRequest) return;
+      dispatch({ type: 'parameters.request', value: utils.formatUnits(data?.account.maxRequest, 18) });
+    } else if (state.tab === 2) {
+      if (!data?.account.maxWithdraw) return;
+      dispatch({ type: 'parameters.withdraw', value: utils.formatUnits(data?.account.maxWithdraw, 18) });
     }
   };
 
@@ -381,7 +430,7 @@ export default function Vault() {
               ...springStatistic,
             }}
             label="APR"
-            value={data?.vault.totalSupply ? '48.95%' : '-'}
+            value={data?.vault.totalAssets ? '48.95%' : '-'}
             comment="+9%↑ on (Re)cycler"
             color="rgb(48, 245, 109)"
           />
@@ -393,9 +442,9 @@ export default function Vault() {
               ...springStatistic,
             }}
             label="Total TOKE"
-            value={data?.vault.totalSupply ? comma(data?.vault.totalSupply.div(UNIT).toString()) : '-'}
-            comment={(data?.vault.totalSupply && market.toke) ? (
-              `$${(data?.vault.totalSupply.div(UNIT).toNumber() * market.toke).toFixed(1)} USD` 
+            value={data?.vault.totalAssets ? comma(data?.vault.totalAssets.div(UNIT).toString()) : '-'}
+            comment={(data?.vault.totalAssets && market.toke) ? (
+              `$${(data?.vault.totalAssets.div(UNIT).toNumber() * market.toke).toFixed(1)} USD` 
             ) : `-`}
           />
         </Statistics>
@@ -406,20 +455,31 @@ export default function Vault() {
           <TokenInput>
             <Input value={value()} setter={setter} />
             <Max onClick={max}>MAX</Max>
-            <Symbol>{state.tab === 0 ? 'tTOKE' : '(re)tTOKE'}</Symbol>
+            <Symbol>TOKE</Symbol>
           </TokenInput>
 
           <ActionButton data={data} />
 
           <Output>
-            <OutputLabel>
-              {state.tab === 0 ? 'You receive (on next cycle)' : 'You receive'}
-            </OutputLabel>
-            {value() ? value() : '0'}
-            <OutputGrey style={{ marginLeft: 5 }}>
-              {state.tab === 0 ? '(re)tTOKE' : 'tTOKE'}
-            </OutputGrey>
+            {state.tab === 0 && <OutputLabel>You receive</OutputLabel>}
+            {state.tab === 0 && (previewDeposit ? toDecimals(utils.formatUnits(previewDeposit, 18).toString(), 4) : '0')}
+            {state.tab === 0 && <OutputGrey style={{ marginLeft: 5 }}>(re)TOKE</OutputGrey>}
+            {state.tab === 1 && <OutputLabel>You burn</OutputLabel>}
+            {state.tab === 1 && (previewRequest ? toDecimals(utils.formatUnits(previewRequest, 18).toString(), 4) : '0')}
+            {state.tab === 1 && <OutputGrey style={{ marginLeft: 5 }}>(re)TOKE</OutputGrey>}
+            {state.tab === 2 && <OutputLabel>You withdraw</OutputLabel>}
+            {state.tab === 2 && (value() ? value() : '0.0')}
+            {state.tab === 2 && <OutputGrey style={{ marginLeft: 5 }}>TOKE</OutputGrey>}
           </Output>
+
+          {state.tab === 0 && (
+            <Output>
+              <OutputLabel>Slippage</OutputLabel>
+              {(convertToShares && previewDeposit) ? toDecimals(utils.formatUnits(convertToShares.sub(previewDeposit), 18).toString(), 10) : '-'}
+              <OutputGrey style={{ marginLeft: 5 }}>(re)TOKE</OutputGrey>
+            </Output>
+          )}
+
           <Output>
             <OutputLabel>Vault fee (only on weekly-rewards)</OutputLabel>
             {data ? data?.vault.fee.toNumber() / 100 : '-'}
@@ -428,17 +488,21 @@ export default function Vault() {
         </Recycler>
 
         <Balances>
-          <Balance
-            label="ACTIVE"
-            amount={data?.account.balanceOfretTOKE}
-            symbol="(re)tTOKE"
-            comment="Actively compounds TOKE rewards every week."
+          <BalanceShares
+            reToke={data?.account.balanceOfReToke}
+            toke={data?.account.assetsOf}
           />
           <Balance
-            label="QUEUED"
-            amount={data?.account.queuedOftTOKE}
-            symbol="tTOKE"
-            comment="Queued tokens start earning on the next weekly cycle."
+            label="REQUESTED WITHDRAWAL"
+            amount={data?.account?.requestOf?.assets.sub(data?.account.maxWithdraw)}
+            symbol="TOKE"
+            comment="TOKE that are being queued for withdrawal. Please wait 1 - 2 cycles until the TOKE become available."
+          />
+          <Balance
+            label="WITHDRAWABLE"
+            amount={data?.account.maxWithdraw}
+            symbol="TOKE"
+            comment="TOKE that can be withdrawn from the vault."
           />
         </Balances>
 
@@ -451,6 +515,9 @@ export default function Vault() {
           </Paragraph>
           <Paragraph>
             This means that you can "put and forget" your TOKE in the vault, and it'll automatically maximise your profits, bypassing the need to spend gas every week to claim TOKE which is normally done on Tokemak.
+          </Paragraph>
+          <Paragraph>
+            The (Re)cycler now also partially supports the <a href="https://eips.ethereum.org/EIPS/eip-4626" style={{ borderBottom: '1px dotted white' }}>EIP-4626</a> standard.
           </Paragraph>
         </Block>
 
@@ -471,24 +538,24 @@ export default function Vault() {
           <H2 style={{
             marginTop: 40,
             marginBottom: 10,
-          }}>The <Monospace>(re)tTOKE</Monospace> token</H2>
+          }}>The <Monospace>(re)TOKE</Monospace> token</H2>
           <Paragraph>
-            The (re)tTOKE is a token that is pegged 1:1 to tTOKE and will automatically increase in balance when rewards are paid out (akin to stETH's rebasing). 
+            The (re)TOKE token represents shares of the (Re)cycler pool and will automatically increase in balance when rewards are paid out (akin to stETH's rebasing).
             <br />
             <br />
-            When depositing tTOKE into the vault, and equal amount of (re)tTOKE will be minted - and when (re)tTOKE is burned, the tTOKE is redeemed.
+            When depositing TOKE into the vault, and proportional amount of (re)TOKE will be minted - and when (re)TOKE is burned, the underlying TOKE can be redeemed.
           </Paragraph>
         </Block>
 
         <Figure src={Figure1} />
-        <Caption>Figure: The relation between tTOKE and (re)tTOKE</Caption>
+        <Caption>Figure: The relation between TOKE and (re)TOKE</Caption>
 
         <Block>
           <Paragraph>
             Similarly to Tokemak itself, you do not start earning rewards as soon as you deposit into the (Re)cycler vault - instead you're eligible for rewards at the start of the next weekly cycle.
             <br />
             <br />
-            Upon depositing tTOKE, (re)tTOKE will first be zero - this is expected. When the next cycle begins, your (re)tTOKE balance will automatically show up in your wallet (no transaction is needed for this).
+            The vault simulates this by introducing "slippage", where upon deposit, you're credited an amount of TOKE that'll be rewarded on the next cycle reward to normalize the compounding for the first cycle.
           </Paragraph>
         </Block>
 
@@ -501,7 +568,7 @@ export default function Vault() {
             <Item>
               <Paragraph>
                 <Bold style={{ paddingBottom: 2, display: 'inline-block' }}>Slashing Risk</Bold><br />
-                The vault has similar risks to Tokemak itself. When voting with Tokemak, it's possible that tTOKE can be slashed.
+                The vault has similar risks to Tokemak itself. When voting with Tokemak, it's possible that TOKE can be slashed.
                 As such, we're introducing a constraint on which reactors can be voted and is maintained by the laboratory for now.
               </Paragraph>
             </Item>

@@ -45,7 +45,7 @@ export function IndicatorCapacity({ value, style }: IndicatorCapacityProps) {
   
   return (
     <IndicatorStyled style={style}>
-      {render} <IndicatorSymbol>tTOKE</IndicatorSymbol>
+      {render} <IndicatorSymbol>TOKE</IndicatorSymbol>
     </IndicatorStyled>
   );
 }
@@ -59,7 +59,7 @@ export function IndicatorSupply({ value, style }: IndicatorSupplyProps) {
   return (
     <IndicatorStyled style={style}>
       <animated.span>{value}</animated.span>{' '}
-      <IndicatorSymbol>tTOKE</IndicatorSymbol>
+      <IndicatorSymbol>TOKE</IndicatorSymbol>
     </IndicatorStyled>
   );
 }

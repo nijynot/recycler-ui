@@ -31,15 +31,21 @@ export default function Tabs() {
     <TabsStyled>
       <Tab
         active={state.tab === 0}
-        style={{ borderRadius: '8px 0 0 8px' }}
+        style={{ borderRadius: '8px 0 0 8px', borderRight: 0 }}
         onClick={() => dispatch({ type: 'tab', value: 0 })}
       >
         Deposit
       </Tab>
       <Tab
         active={state.tab === 1}
-        style={{ borderRadius: '0 8px 8px 0', borderLeft: 0 }}
         onClick={() => dispatch({ type: 'tab', value: 1 })}
+      >
+        Request
+      </Tab>
+      <Tab
+        active={state.tab === 2}
+        style={{ borderRadius: '0 8px 8px 0', borderLeft: 0 }}
+        onClick={() => dispatch({ type: 'tab', value: 2 })}
       >
         Withdraw
       </Tab>

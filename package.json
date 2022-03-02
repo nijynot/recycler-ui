@@ -44,11 +44,14 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "node": "hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y --fork-block-number 14167146",
+    "node": "hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/5SdINX6r6wQxayajVaR5AxMnlWEi0d2Y --fork-block-number 14303304",
     "faucet": "hardhat run ./src/scripts/faucet.js --network localhost",
     "rollover": "hardhat run ./src/scripts/rollover.js --network localhost",
     "capacity": "hardhat run ./src/scripts/capacity.js --network localhost",
-    "automine": "hardhat run ./src/scripts/automine.js --network localhost"
+    "automine": "hardhat run ./src/scripts/automine.js --network localhost",
+    "increment-cycle": "hardhat run ./src/scripts/increment-cycle-index.js --network localhost",
+    "claim": "hardhat run ./src/scripts/claim.js --network localhost",
+    "address": "hardhat run ./src/scripts/get-addresses.js --network localhost"
   },
   "eslintConfig": {
     "extends": [

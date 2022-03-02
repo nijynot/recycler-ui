@@ -60,7 +60,7 @@ export function Capacity({ label, value }: CapacityProps) {
     <Wrapper>
       <CapacityLabel>{label}</CapacityLabel>
       <CapacityAmount>{render}</CapacityAmount>
-      <CapacitySymbol>tTOKE</CapacitySymbol>
+      <CapacitySymbol>TOKE</CapacitySymbol>
     </Wrapper>
   );
 }

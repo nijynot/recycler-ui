@@ -2,13 +2,12 @@ import { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
 
-import RecyclerABI from '../../../constants/abis/Recycler.json';
-import RecyclerManagerABI from '../../../constants/abis/RecyclerManager.json';
-import TokeVotePoolABI from '../../../constants/abis/TokeVotePool.json';
+import RecyclerVaultV1 from '../../../constants/abis/RecyclerVaultV1.json';
+import ERC20 from '../../../constants/abis/ERC20.json';
 import { useGlobalContext } from '../../../contexts/GlobalContext';
 import { getAddressList } from '../../../constants';
 import { VaultData } from '../../../hooks/useVaultData';
-import { constants, ContractInterface } from 'ethers';
+import { constants } from 'ethers';
 
 const Button = styled.button({
   border: 0,
@@ -62,13 +61,13 @@ export default function ActionButton({ data }: ActionButtonProps) {
   const [{ data: account }] = useAccount({ fetchEns: false });
   const [{ data: allowance }, read] = useContractRead(
     {
-      addressOrName: getAddressList().TokeVotePool,
-      contractInterface: TokeVotePoolABI,
+      addressOrName: getAddressList().Toke,
+      contractInterface: ERC20,
     },
     'allowance',
     {
       args: useMemo(() => (
-        [account?.address, getAddressList().RecyclerManager]
+        [account?.address, getAddressList().RecyclerProxy]
       ), [account?.address]),
       watch: true,
     },
@@ -80,36 +79,48 @@ export default function ActionButton({ data }: ActionButtonProps) {
 
   const [{ data: approveData, error: approveError }, approve] = useContractWrite(
     {
-      addressOrName: getAddressList().TokeVotePool,
-      contractInterface: TokeVotePoolABI,
+      addressOrName: getAddressList().Toke,
+      contractInterface: ERC20,
     },
     'approve',
     {
-      args: useMemo(() => ([getAddressList().RecyclerManager, constants.MaxUint256]), []),
+      args: useMemo(() => ([getAddressList().RecyclerProxy, constants.MaxUint256]), []),
     },
   );
-  const [{ data: mintData, error: mintError }, mint] = useContractWrite(
+  const [{ data: depositData, error: depositError }, deposit] = useContractWrite(
     {
-      addressOrName: getAddressList().RecyclerManager,
-      contractInterface: RecyclerManagerABI,
+      addressOrName: getAddressList().RecyclerProxy,
+      contractInterface: RecyclerVaultV1,
     },
-    'mint',
+    'deposit',
     {
       args: useMemo(() => (
-        [account?.address, state.parameters.mintbn]
-      ), [account?.address, state.parameters.mintbn]),
+        [state.parameters.mintbn, account?.address]
+      ), [state.parameters.mintbn, account?.address]),
     },
   );
-  const [{ data: burnData, error: burnError }, burn] = useContractWrite(
+  const [{ data: requestData, error: requestError }, request] = useContractWrite(
     {
-      addressOrName: getAddressList().Recycler,
-      contractInterface: RecyclerABI as ContractInterface,
+      addressOrName: getAddressList().RecyclerProxy,
+      contractInterface: RecyclerVaultV1,
     },
-    'burn',
+    'request',
     {
       args: useMemo(() => (
-        [account?.address, account?.address, state.parameters.burnbn]
-      ), [account?.address, state.parameters.burnbn]),
+        [state.parameters.requestbn, account?.address]
+      ), [state.parameters.requestbn, account?.address]),
+    },
+  );
+  const [{ data: withdrawData, error: withdrawError }, withdraw] = useContractWrite(
+    {
+      addressOrName: getAddressList().RecyclerProxy,
+      contractInterface: RecyclerVaultV1,
+    },
+    'withdraw',
+    {
+      args: useMemo(() => (
+        [state.parameters.withdrawbn, account?.address, account?.address]
+      ), [state.parameters.withdrawbn, account?.address]),
     },
   );
 
@@ -134,7 +145,8 @@ export default function ActionButton({ data }: ActionButtonProps) {
   const openTranasctionSentModel = useCallback((txHash: string, reset?: boolean) => {
     if (reset) {
       dispatch({ type: 'parameters.mint', value: '' });
-      dispatch({ type: 'parameters.burn', value: '' });
+      dispatch({ type: 'parameters.request', value: '' });
+      dispatch({ type: 'parameters.withdraw', value: '' });
     }
 
     dispatch({ type: 'modals.isSuccessModalOpen', value: true });
@@ -143,7 +155,8 @@ export default function ActionButton({ data }: ActionButtonProps) {
 
   const openErrorModal = useCallback((errorMsg: any) => {
     dispatch({ type: 'parameters.mint', value: '' });
-    dispatch({ type: 'parameters.burn', value: '' });
+    dispatch({ type: 'parameters.request', value: '' });
+    dispatch({ type: 'parameters.withdraw', value: '' });
     dispatch({ type: 'modals.isErrorModalOpen', value: true });
     dispatch({ type: 'error', value: errorMsg });
   }, [dispatch]);
@@ -177,36 +190,52 @@ export default function ActionButton({ data }: ActionButtonProps) {
   }, [approveWaitError, openErrorModal]);
 
   /**
-   * mint
+   * deposit
    */
 
   useEffect(() => {
-    if (mintData?.hash) {
-      openTranasctionSentModel(mintData?.hash, true)
+    if (depositData?.hash) {
+      openTranasctionSentModel(depositData?.hash, true)
     }
-  }, [mintData?.hash, openTranasctionSentModel]);
+  }, [depositData?.hash, openTranasctionSentModel]);
 
   useEffect(() => {
-    if (mintError) {
-      openErrorModal(String(JSON.stringify(mintError, null, 2)));
+    if (depositError) {
+      openErrorModal(String(JSON.stringify(depositError, null, 2)));
     }
-  }, [mintError, openErrorModal]);
+  }, [depositError, openErrorModal]);
 
   /**
-   * burn
+   * request effects
    */
 
   useEffect(() => {
-    if (burnData?.hash) {
-      openTranasctionSentModel(burnData?.hash, true)
+    if (requestData?.hash) {
+      openTranasctionSentModel(requestData?.hash, true)
     }
-  }, [burnData?.hash, openTranasctionSentModel]);
+  }, [requestData?.hash, openTranasctionSentModel]);
 
   useEffect(() => {
-    if (burnError) {
-      openErrorModal(String(JSON.stringify(burnError, null, 2)));
+    if (requestError) {
+      openErrorModal(String(JSON.stringify(requestError, null, 2)));
     }
-  }, [burnError, openErrorModal]);
+  }, [requestError, openErrorModal]);
+
+  /**
+   * withdraw
+   */
+
+  useEffect(() => {
+    if (withdrawData?.hash) {
+      openTranasctionSentModel(withdrawData?.hash, true)
+    }
+  }, [withdrawData?.hash, openTranasctionSentModel]);
+
+  useEffect(() => {
+    if (withdrawError) {
+      openErrorModal(String(JSON.stringify(withdrawError, null, 2)));
+    }
+  }, [withdrawError, openErrorModal]);
 
   /**
    * UI
@@ -220,34 +249,44 @@ export default function ActionButton({ data }: ActionButtonProps) {
     button = <BlueButton onClick={() => openWalletModal()}>Connect Wallet</BlueButton>;;
   } else {
     if (state.tab === 0) {
-      if (data && data?.vault.rotating) {
+      if (data && data?.vault.status) {
         button = <GreyButton>Cycle Rollover (Inactive)</GreyButton>;
       } else if (!state.parameters.mint) {
         button = <GreyButton>Enter an amount</GreyButton>;
-      } else if (data && state.parameters.mintbn.gt(data?.account.balanceOftTOKE)) {
-        button = <GreyButton>Insufficient tTOKE balance</GreyButton>;
-      } else if (data && data?.account.queuedOftTOKE.gt(0) && !data?.account.epoch.eq(data?.vault.cursor)) {
-        button = <GreyButton>You already have queued tTOKE</GreyButton>;
-      } else if (data && (state.parameters.mintbn.eq(0) || state.parameters.mintbn.lt(data?.vault.dust))) {
+      } else if (data && state.parameters.mintbn.gt(data?.account.balanceOfToke)) {
+        button = <GreyButton>Insufficient TOKE balance</GreyButton>;
+      } else if (data && (state.parameters.mintbn.eq(0))) {
         button = <GreyButton>Amount too low</GreyButton>;
-      } else if (data && (state.parameters.mintbn.add(data?.vault.totalSupply)).gt(data?.vault.capacity)) {
+      } else if (data && (state.parameters.mintbn.add(data?.vault.totalAssets)).gt(data?.vault.capacity)) {
         button = <GreyButton>Amount exceeds capacity</GreyButton>;
       } else if (allowance && state.parameters.mintbn.gt(allowance)) {
-        button = <BlueButton onClick={() => approve()}>Approve tTOKE</BlueButton>;
+        button = <BlueButton onClick={() => approve()}>Approve TOKE</BlueButton>;
       } else {
-        button = <GreenButton onClick={() => mint()}>Deposit tTOKE</GreenButton>;
+        button = <GreenButton onClick={() => deposit()}>Deposit TOKE</GreenButton>;
       }
     }
 
     if (state.tab === 1) {
-      if (!state.parameters.burn) {
+      if (!state.parameters.request) {
         button = <GreyButton>Enter an amount</GreyButton>;
-      } else if (data?.account.balanceOfretTOKE && state.parameters.burnbn.gt(data?.account.balanceOfretTOKE)) {
-        button = <GreyButton>Insufficient (re)tTOKE balance</GreyButton>;
-      } else if (state.parameters.burnbn.eq(0)) {
+      } else if (data && state.parameters.requestbn.gt(data?.account.maxRequest)) {
+        button = <GreyButton>Request amount too high</GreyButton>;
+      } else if (data && state.parameters.requestbn.eq(0)) {
         button = <GreyButton>Amount too low</GreyButton>;
       } else {
-        button = <GreenButton onClick={() => burn()}>Withdraw tTOKE</GreenButton>;
+        button = <GreenButton onClick={() => request()}>Request Withdrawal</GreenButton>;
+      }
+    }
+
+    if (state.tab === 2) {
+      if (!state.parameters.withdraw) {
+        button = <GreyButton>Enter an amount</GreyButton>;
+      } else if (data && state.parameters.withdrawbn.gt(data?.account.maxWithdraw)) {
+        button = <GreyButton>Withdraw amount too high</GreyButton>;
+      } else if (state.parameters.withdrawbn.eq(0)) {
+        button = <GreyButton>Amount too low</GreyButton>;
+      } else {
+        button = <GreenButton onClick={() => withdraw()}>Withdraw TOKE</GreenButton>;
       }
     }
   }

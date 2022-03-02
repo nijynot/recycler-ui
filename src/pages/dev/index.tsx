@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useAccount, useProvider } from 'wagmi';
 
-import RecyclerABI from '../../constants/abis/Recycler.json';
+import RecyclerVaultV1 from '../../constants/abis/RecyclerVaultV1.json';
 import { getAddressList } from '../../constants';
 import { useVaultData } from '../../hooks/useVaultData';
 
@@ -16,6 +16,17 @@ const Button = styled.button({
   padding: 8,
   marginBottom: 8,
   width: 150,
+});
+
+const Title = styled.div({
+  background: '#222',
+  border: '1px solid #303030',
+  borderRadius: 8,
+  fontFamily: 'iA Writer Mono',
+  fontWeight: 500,
+  padding: 8,
+  marginBottom: 8,
+  width: 300,
 });
 
 const Input = styled.input({
@@ -37,6 +48,9 @@ export default function Dev() {
   const [totalVotes, setTotalVotes] = useState('');
   const [reactorKey, setReactorKey] = useState('');
   const [reactorVotes, setReactorVotes] = useState('');
+  const [deadlineTime, setDeadlineTime] = useState('');
+  const [giveAmount, setGiveAmount] = useState('');
+  const [capacityAmount, setCapacityAmount] = useState('');
 
   /**
    * read
@@ -50,15 +64,81 @@ export default function Dev() {
    * write
    */
 
-  const recycler = new Contract(getAddressList().Recycler, RecyclerABI as ContractInterface, provider);
+  const recycler = new Contract(getAddressList().RecyclerProxy, RecyclerVaultV1 as ContractInterface, provider);
+
+  const initialize = async () => {
+    try {
+      const signer = await account?.connector?.getSigner();
+      if (signer) {
+        const tx = await recycler.connect(signer).initialize(
+          '0x2e9d63788249371f1DFC918a52f8d799F4a38C94',
+          '0x96F98Ed74639689C3A11daf38ef86E59F43417D3',
+          '0x43094eD6D6d214e43C31C38dA91231D2296Ca511',
+          '0x79dD22579112d8a5F7347c5ED7E609e60da713C5',
+          '0xA86e412109f77c45a3BC1c5870b880492Fb86A14',
+          BigNumber.from('1000000000000000000000'),
+        );
+        console.log(tx);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const migrate = async () => {
+    try {
+      const signer = await account?.connector?.getSigner();
+      if (signer) {
+        const tx = await recycler.connect(signer).migrate();
+        console.log(tx);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const setCapacity = async () => {
+    try {
+      const signer = await account?.connector?.getSigner();
+      if (signer) {
+        const tx = await recycler.connect(signer).setCapacity(BigNumber.from(capacityAmount));
+        console.log(tx);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const setDeadline = async () => {
+    try {
+      const signer = await account?.connector?.getSigner();
+      if (signer) {
+        const tx = await recycler.connect(signer).setDeadline(BigNumber.from(deadlineTime));
+        console.log(tx);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const give = async () => {
+    try {
+      const signer = await account?.connector?.getSigner();
+      if (signer) {
+        const tx = await recycler.connect(signer).give(BigNumber.from(giveAmount));
+        console.log(tx);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const vote = async () => {
     try {
       const signer = await account?.connector?.getSigner();
-
       if (signer) {
         const tx = await recycler.connect(signer).vote([
-          getAddressList().Recycler,
+          getAddressList().RecyclerProxy,
           voteSessionKey,
           BigNumber.from(nonce),
           BigNumber.from(chainId),
@@ -88,53 +168,87 @@ export default function Dev() {
           <div style={{
             fontFamily: 'iA Writer Mono',
             fontSize: 16,
-          }}>{data && data?.vault.totalSupply.toString()}</div>
+          }}>{data && data?.vault.totalAssets.toString()}</div>
         </div>
+      </div>
 
-        <div style={{
-          background: '#222',
-          border: '1px solid #303030',
-          borderRadius: 8,
-          fontFamily: 'iA Writer Mono',
-          fontWeight: 500,
-          padding: 8,
-          marginBottom: 8,
-          width: 300,
-        }}>
-          `vote()`
-        </div>
+      <Title>`setCapacity(uint256 capacity)`</Title>
+      <Input
+        value={capacityAmount}
+        onChange={e => setCapacityAmount(e.target.value)}
+        placeholder="capacity"
+      />
+      <Button onClick={() => setCapacity()}>Set Capacity</Button>
+
+      <br />
+      <br />
+
+      <Title>`setDeadline(uint256 deadline)`</Title>
+      <Input
+        value={deadlineTime}
+        onChange={e => setDeadlineTime(e.target.value)}
+        placeholder="deadline"
+      />
+      <Button onClick={() => setDeadline()}>Set Deadline</Button>
+
+      <br />
+      <br />
+
+      <Title>`give(uint256 assets)`</Title>
+      <Input
+        value={giveAmount}
+        onChange={e => setGiveAmount(e.target.value)}
+        placeholder="give"
+      />
+      <Button onClick={() => give()}>Give Approve</Button>
+
+      <br />
+      <br />
+
+      <Title>`vote()`</Title>
         <Input
           value={voteSessionKey}
           onChange={e => setVoteSessionKey(e.target.value)}
           placeholder="voteSessionKey"
-        />
+          />
         <Input
           value={nonce}
           onChange={e => setNonce(e.target.value)}
           placeholder="nonce"
-        />
+          />
         <Input
           value={chainId}
           onChange={e => setChainId(e.target.value)}
           placeholder="chainId"
-        />
+          />
         <Input
           value={totalVotes}
           onChange={e => setTotalVotes(e.target.value)}
           placeholder="totalVotes"
-        />
+          />
         <Input
           value={reactorKey}
           onChange={e => setReactorKey(e.target.value)}
           placeholder="allocations[0].reactorKey"
-        />
+          />
         <Input
           value={reactorVotes}
           onChange={e => setReactorVotes(e.target.value)}
           placeholder="allocations[0].amount"
-        />
+          />
         <Button onClick={() => vote()}>Vote on Reactor</Button>
-      </div>
+
+        <br />
+        <br />
+
+        <Title>`initialize(...)`</Title>
+        <Button onClick={() => initialize()}>Initialize</Button>
+
+        <br />
+        <br />
+
+        <Title>`migrate()`</Title>
+        <Button onClick={() => migrate()}>Migrate</Button>
     </>
   )
 }
