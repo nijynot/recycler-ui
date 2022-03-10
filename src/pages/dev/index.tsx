@@ -51,6 +51,14 @@ export default function Dev() {
   const [deadlineTime, setDeadlineTime] = useState('');
   const [giveAmount, setGiveAmount] = useState('');
   const [capacityAmount, setCapacityAmount] = useState('');
+  // compound vars
+  const [compoundChainId, setCompoundChainId] = useState('');
+  const [compoundCycle, setCompoundCycle] = useState('');
+  const [compoundWallet, setCompoundWallet] = useState('');
+  const [compoundAmount, setCompoundAmount] = useState('');
+  const [compoundV, setCompoundV] = useState('');
+  const [compoundR, setCompoundR] = useState('');
+  const [compoundS, setCompoundS] = useState('');
 
   /**
    * read
@@ -155,6 +163,27 @@ export default function Dev() {
     }
   };
 
+  const compound = async () => {
+    try {
+      const signer = await account?.connector?.getSigner();
+      if (signer) {
+        const tx = await recycler.connect(signer).compound(
+          BigNumber.from(compoundChainId),
+          BigNumber.from(compoundCycle),
+          compoundWallet,
+          BigNumber.from(compoundAmount),
+          BigNumber.from(compoundV),
+          compoundR,
+          compoundS,
+        );
+
+        console.log(tx);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
     <>
       <div style={{}}>
@@ -249,6 +278,47 @@ export default function Dev() {
 
         <Title>`migrate()`</Title>
         <Button onClick={() => migrate()}>Migrate</Button>
+
+        <br />
+        <br />
+
+        <Title>`compound(uint256 chainId, uint256 cycle, address wallet, uint256 amount, uin8 v, bytes32 r, bytes32 s)`</Title>
+        <Input
+          value={compoundChainId}
+          onChange={e => setCompoundChainId(e.target.value)}
+          placeholder="chainId"
+        />
+        <Input
+          value={compoundCycle}
+          onChange={e => setCompoundCycle(e.target.value)}
+          placeholder="cycle"
+        />
+        <Input
+          value={compoundWallet}
+          onChange={e => setCompoundWallet(e.target.value)}
+          placeholder="wallet"
+        />
+        <Input
+          value={compoundAmount}
+          onChange={e => setCompoundAmount(e.target.value)}
+          placeholder="amount"
+        />
+        <Input
+          value={compoundV}
+          onChange={e => setCompoundV(e.target.value)}
+          placeholder="v"
+        />
+        <Input
+          value={compoundR}
+          onChange={e => setCompoundR(e.target.value)}
+          placeholder="r"
+        />
+        <Input
+          value={compoundS}
+          onChange={e => setCompoundS(e.target.value)}
+          placeholder="s"
+        />
+        <Button onClick={() => compound()}>Compound Vault</Button>
     </>
   )
 }
