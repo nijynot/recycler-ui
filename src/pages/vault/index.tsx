@@ -430,8 +430,8 @@ export default function Vault() {
               ...springStatistic,
             }}
             label="APR"
-            value={data?.vault.totalAssets ? '48.95%' : '-'}
-            comment="+9%↑ on (Re)cycler"
+            value={data?.vault.totalAssets ? `~${(((1 + (27 / 100 / 52)) ** 52 - 1) * 100).toFixed(2)}%` : '-'}
+            comment={`+3%↑ on (Re)cycler`}
             color="rgb(48, 245, 109)"
           />
           <Divider style={springStatistic} />
