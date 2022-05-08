@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useAccount, useProvider } from 'wagmi';
 
-import RecyclerVaultV1 from '../../constants/abis/RecyclerVaultV1.json';
+import RecyclerVaultV1 from '../../constants/abis/RecyclerVaultV2.json';
 import { getAddressList } from '../../constants';
 import { useVaultData } from '../../hooks/useVaultData';
 
