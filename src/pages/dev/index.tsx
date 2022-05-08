@@ -51,6 +51,8 @@ export default function Dev() {
   const [deadlineTime, setDeadlineTime] = useState('');
   const [giveAmount, setGiveAmount] = useState('');
   const [capacityAmount, setCapacityAmount] = useState('');
+  // core
+  const [coreTarget, setCoreTarget] = useState('');
   // compound vars
   const [compoundChainId, setCompoundChainId] = useState('');
   const [compoundCycle, setCompoundCycle] = useState('');
@@ -184,6 +186,31 @@ export default function Dev() {
     }
   }
 
+  const core = async () => {
+    try {
+      const signer = await account?.connector?.getSigner();
+      if (signer) {
+        const tx = await recycler.connect(signer).core(
+          coreTarget,
+          [
+            getAddressList().RecyclerProxy,
+            voteSessionKey,
+            BigNumber.from(nonce),
+            BigNumber.from(chainId),
+            BigNumber.from(totalVotes),
+            [
+              [reactorKey, BigNumber.from(reactorVotes)],
+            ],
+          ]
+        );
+
+        console.log(tx);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <>
       <div style={{}}>
@@ -235,90 +262,131 @@ export default function Dev() {
       <br />
 
       <Title>`vote()`</Title>
-        <Input
-          value={voteSessionKey}
-          onChange={e => setVoteSessionKey(e.target.value)}
-          placeholder="voteSessionKey"
-          />
-        <Input
-          value={nonce}
-          onChange={e => setNonce(e.target.value)}
-          placeholder="nonce"
-          />
-        <Input
-          value={chainId}
-          onChange={e => setChainId(e.target.value)}
-          placeholder="chainId"
-          />
-        <Input
-          value={totalVotes}
-          onChange={e => setTotalVotes(e.target.value)}
-          placeholder="totalVotes"
-          />
-        <Input
-          value={reactorKey}
-          onChange={e => setReactorKey(e.target.value)}
-          placeholder="allocations[0].reactorKey"
-          />
-        <Input
-          value={reactorVotes}
-          onChange={e => setReactorVotes(e.target.value)}
-          placeholder="allocations[0].amount"
-          />
-        <Button onClick={() => vote()}>Vote on Reactor</Button>
+      <Input
+        value={voteSessionKey}
+        onChange={e => setVoteSessionKey(e.target.value)}
+        placeholder="voteSessionKey"
+      />
+      <Input
+        value={nonce}
+        onChange={e => setNonce(e.target.value)}
+        placeholder="nonce"
+      />
+      <Input
+        value={chainId}
+        onChange={e => setChainId(e.target.value)}
+        placeholder="chainId"
+      />
+      <Input
+        value={totalVotes}
+        onChange={e => setTotalVotes(e.target.value)}
+        placeholder="totalVotes"
+      />
+      <Input
+        value={reactorKey}
+        onChange={e => setReactorKey(e.target.value)}
+        placeholder="allocations[0].reactorKey"
+      />
+      <Input
+        value={reactorVotes}
+        onChange={e => setReactorVotes(e.target.value)}
+        placeholder="allocations[0].amount"
+      />
+      <Button onClick={() => vote()}>Vote on Reactor</Button>
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <Title>`initialize(...)`</Title>
-        <Button onClick={() => initialize()}>Initialize</Button>
+      <Title>`initialize(...)`</Title>
+      <Button onClick={() => initialize()}>Initialize</Button>
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <Title>`migrate()`</Title>
-        <Button onClick={() => migrate()}>Migrate</Button>
+      <Title>`migrate()`</Title>
+      <Button onClick={() => migrate()}>Migrate</Button>
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <Title>`compound(uint256 chainId, uint256 cycle, address wallet, uint256 amount, uin8 v, bytes32 r, bytes32 s)`</Title>
-        <Input
-          value={compoundChainId}
-          onChange={e => setCompoundChainId(e.target.value)}
-          placeholder="chainId"
-        />
-        <Input
-          value={compoundCycle}
-          onChange={e => setCompoundCycle(e.target.value)}
-          placeholder="cycle"
-        />
-        <Input
-          value={compoundWallet}
-          onChange={e => setCompoundWallet(e.target.value)}
-          placeholder="wallet"
-        />
-        <Input
-          value={compoundAmount}
-          onChange={e => setCompoundAmount(e.target.value)}
-          placeholder="amount"
-        />
-        <Input
-          value={compoundV}
-          onChange={e => setCompoundV(e.target.value)}
-          placeholder="v"
-        />
-        <Input
-          value={compoundR}
-          onChange={e => setCompoundR(e.target.value)}
-          placeholder="r"
-        />
-        <Input
-          value={compoundS}
-          onChange={e => setCompoundS(e.target.value)}
-          placeholder="s"
-        />
-        <Button onClick={() => compound()}>Compound Vault</Button>
+      <Title>`compound(uint256 chainId, uint256 cycle, address wallet, uint256 amount, uin8 v, bytes32 r, bytes32 s)`</Title>
+      <Input
+        value={compoundChainId}
+        onChange={e => setCompoundChainId(e.target.value)}
+        placeholder="chainId"
+      />
+      <Input
+        value={compoundCycle}
+        onChange={e => setCompoundCycle(e.target.value)}
+        placeholder="cycle"
+      />
+      <Input
+        value={compoundWallet}
+        onChange={e => setCompoundWallet(e.target.value)}
+        placeholder="wallet"
+      />
+      <Input
+        value={compoundAmount}
+        onChange={e => setCompoundAmount(e.target.value)}
+        placeholder="amount"
+      />
+      <Input
+        value={compoundV}
+        onChange={e => setCompoundV(e.target.value)}
+        placeholder="v"
+      />
+      <Input
+        value={compoundR}
+        onChange={e => setCompoundR(e.target.value)}
+        placeholder="r"
+      />
+      <Input
+        value={compoundS}
+        onChange={e => setCompoundS(e.target.value)}
+        placeholder="s"
+      />
+      <Button onClick={() => compound()}>Compound Vault</Button>
+
+      <br />
+      <br />
+
+      <Title>`core()`</Title>
+      <Input
+        value={coreTarget}
+        onChange={e => setCoreTarget(e.target.value)}
+        placeholder="target"
+      />
+      <Input
+        value={voteSessionKey}
+        onChange={e => setVoteSessionKey(e.target.value)}
+        placeholder="voteSessionKey"
+      />
+      <Input
+        value={nonce}
+        onChange={e => setNonce(e.target.value)}
+        placeholder="nonce"
+      />
+      <Input
+        value={chainId}
+        onChange={e => setChainId(e.target.value)}
+        placeholder="chainId"
+      />
+      <Input
+        value={totalVotes}
+        onChange={e => setTotalVotes(e.target.value)}
+        placeholder="totalVotes"
+      />
+      <Input
+        value={reactorKey}
+        onChange={e => setReactorKey(e.target.value)}
+        placeholder="allocations[0].reactorKey"
+      />
+      <Input
+        value={reactorVotes}
+        onChange={e => setReactorVotes(e.target.value)}
+        placeholder="allocations[0].amount"
+      />
+      <Button onClick={() => core()}>Vote on Reactor</Button>
     </>
   )
 }
